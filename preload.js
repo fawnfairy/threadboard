@@ -1,0 +1,10 @@
+const { contextBridge, ipcRenderer: ipc } = require('electron');
+contextBridge.exposeInMainWorld('tb', {
+  loadSync: () => ipc.sendSync('tb:load'),
+  save: j => ipc.send('tb:save', j),
+  saveSync: j => ipc.sendSync('tb:saveSync', j),
+  filePut: (id, meta, buf) => ipc.invoke('tb:filePut', id, meta, buf),
+  fileGet: id => ipc.invoke('tb:fileGet', id),
+  lib: n => ipc.invoke('tb:lib', n),
+  fileDel: id => ipc.invoke('tb:fileDel', id)
+});

@@ -1,0 +1,71 @@
+{
+  "name": "threadboard",
+  "version": "1.0.0",
+  "description": "Local-first linked-notes workspace",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "electron-builder --mac"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.5.0",
+    "pdfjs-dist": "4.10.38"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "app.threadboard.mac",
+    "productName": "Threadboard",
+    "copyright": "Copyright \u00a9 Threadboard",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**"
+    ],
+    "artifactName": "Threadboard-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "identity": null,
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "title": "Install Threadboard",
+      "background": "build/background.png",
+      "iconSize": 112,
+      "window": {
+        "width": 660,
+        "height": 400
+      },
+      "contents": [
+        {
+          "x": 170,
+          "y": 200,
+          "type": "file"
+        },
+        {
+          "x": 490,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
+  "author": "Threadboard"
+}

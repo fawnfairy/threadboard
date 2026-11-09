@@ -1,0 +1,46 @@
+name: Build Threadboard.dmg
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  mac:
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Build the .app and .dmg installers (Apple Silicon + Intel)
+        run: npm run dist
+      - name: Check the installers contain the app
+        run: |
+          ls -lh dist/*.dmg
+          for f in dist/*.dmg; do
+            hdiutil attach "$f" -nobrowse -mountpoint /tmp/dmgcheck -quiet
+            ls /tmp/dmgcheck
+            test -d /tmp/dmgcheck/Threadboard.app
+            hdiutil detach /tmp/dmgcheck -quiet
+          done
+      - name: Smoke-test the packaged Apple Silicon app (launch, database, file storage)
+        continue-on-error: true
+        env:
+          THREADBOARD_DATA_DIR: ${{ runner.temp }}/tbdata
+        run: |
+          dist/mac-arm64/Threadboard.app/Contents/MacOS/Threadboard --smoke-test | tee smoke.log
+          grep -q '"ok":true' smoke.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Threadboard-dmg
+          path: dist/*.dmg
+      - name: Publish a release with the downloads
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Threadboard build ${{ github.run_number }}
+          files: dist/*.dmg
