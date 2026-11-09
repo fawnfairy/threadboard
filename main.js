@@ -105,6 +105,8 @@ app.whenReady().then(() => {
       } finally { netCtl.delete(o.id); }
     } catch (x) { return { error: x.name === 'AbortError' ? 'Cancelled (abort)' : String(x.message || x) }; }
   });
+  // Start the Ollama app if it is installed (fixed command, no user input).
+  ipcMain.handle('tb:startOllama', () => new Promise(res => require('child_process').execFile('open', ['-a', 'Ollama'], err => res(!err))));
   ipcMain.on('tb:netCancel', (e, id) => { const a = netCtl.get(id); if (a) a.abort(); });
   ipcMain.handle('tb:fileDel', (e, id) => { if (!okId(id)) return false; fs.rmSync(path.join(filesDir, id), { force: true }); db.prepare('DELETE FROM files WHERE id=?').run(id); return true; });
   win = new BrowserWindow({ width: 1320, height: 840, minWidth: 760, minHeight: 520, title: 'Threadboard', backgroundColor: '#e9edf2',

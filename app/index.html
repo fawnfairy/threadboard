@@ -997,6 +997,13 @@ async function aiNet(path,body){const a=ROOT.ai,url=a.url.replace(/\/+$/,'')+pat
   const r=await fetch(url,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:ctl.ac.signal});
   if(!r.ok)throw new Error('The model server answered '+r.status+': '+(await r.text()).slice(0,200));return r.json()}
 async function aiModelsList(){const a=ROOT.ai;if(a.prov==='ollama'){const r=await aiNet('/api/tags');return(r.models||[]).map(m=>m.name)}const r=await aiNet('/models');return(r.data||[]).map(m=>m.id)}
+async function aiPull(name){aiBusy=true;aiCtl={id:uid(),ac:new AbortController()};aiErr='';aiStat=`Downloading “${name}” to this computer… this can take several minutes (it is a one-time download). Keep Ollama running.`;aiPaint();
+  try{const r=await aiNet('/api/pull',{name,stream:false});if(r.error)throw new Error(r.error);aiModels=await aiModelsList();ROOT.ai.model=name.includes(':')?name:aiModels.find(m=>m.startsWith(name))||aiModels[0]||'';aiStat=`“${name}” is ready.`;save()}
+  catch(e){aiStat='';aiErr=/abort/i.test(String(e.message))?'Download cancelled.':'Download failed: '+(e.message||e)}
+  aiBusy=false;aiCtl=null;aiPaint()}
+async function aiCheck(quiet){const a=ROOT.ai;aiErr='';if(!quiet){aiStat='Checking…';aiPaint()}
+  try{aiModels=await aiModelsList();if(!aiModels.includes(a.model))a.model=aiModels[0]||'';aiStat=aiModels.length?'':'Connected. Now download a model below (free, one time).';save()}
+  catch(e){aiModels=null;aiStat='';if(!quiet)aiErr='Could not reach a model server at that address. Is Ollama (or your server) running? '+(e.message||'')}aiPaint()}
 async function llm(sys,usr,json){const a=ROOT.ai,msgs=[{role:'system',content:sys},{role:'user',content:usr}];
   if(a.prov==='ollama'){const r=await aiNet('/api/chat',{model:a.model,stream:false,format:json?'json':undefined,options:{num_ctx:a.ctx,temperature:.3},messages:msgs});return(r.message||{}).content||''}
   const r=await aiNet('/chat/completions',{model:a.model,temperature:.3,stream:false,messages:msgs});return(((r.choices||[])[0]||{}).message||{}).content||''}
@@ -1059,9 +1066,11 @@ function aiPaint(){const B=$('#aib');if(!B)return;const a=ROOT.ai,locked=ROOT.li
     <div class="fr">Context window (how much the model can read at once)<select id="aix">${[4096,8192,16384,32768].map(v=>`<option value="${v}" ${a.ctx===v?'selected':''}>${v.toLocaleString()} tokens${v===8192?' (default)':''}</option>`).join('')}</select><span>Bigger lets it read more notes but uses more memory and is slower. Some models support less.</span></div>`:''}
   </details>`;B.append(top);
   if(!conn){const h=el$('div','ast');h.innerHTML=`<b>Optional — Threadboard works fully without this.</b><br>The assistant runs a free, open-source model on your own computer. No account, no subscription, nothing is sent over the internet.<br><br>
-    <b>To set it up:</b> 1) Install <b>Ollama</b> (ollama.com) and open it. 2) In Terminal run <code>ollama pull llama3.2</code> (about 2 GB) — or <code>ollama pull qwen2.5:7b</code> (about 4.7 GB, smarter). 3) Press “Check connection” above. LM Studio or llama.cpp also work: choose “OpenAI-compatible”.<br><br>
+    <b>To set it up:</b> 1) <b>Get Ollama</b> (free) and drag it to Applications. 2) Press <b>Start Ollama</b>. 3) Download a model with one click. LM Studio or llama.cpp also work: choose “OpenAI-compatible” above.<br><br>
     <b>Hardware, honestly:</b> small models (3B) need about 4 GB of free memory; 7–8B models about 8 GB (comfortable on 16 GB); 14B and up want 16–32 GB. It’s free to use, but speed, answer quality and how many notes it can read at once are limited by your Mac, the model, and its context window. Small models make mistakes — treat results as suggestions to check.`;B.append(h)}
+  if(!conn&&a.prov==='ollama'){const r=el$('div','aq');r.innerHTML='<button id="aig">Get Ollama</button><button id="ais1">Start Ollama</button>';B.append(r)}
   if(aiErr){B.append(el$('div','ast er',{textContent:aiErr}))}
+  if(conn&&a.prov==='ollama'){const d=el$('details');d.open=!aiModels.length;d.innerHTML=`<summary>${aiModels.length?'Download another model':'Download a model'}</summary><div class="fr">Free, one-time download to this computer<select id="aidm"><option value="llama3.2">Fast · llama3.2 (≈2 GB, needs ≈4 GB free memory)</option><option value="qwen2.5:7b">Smarter · qwen2.5 7B (≈4.7 GB, needs ≈8 GB)</option><option value="llama3.1:8b">Smarter · llama3.1 8B (≈4.9 GB, needs ≈8 GB)</option></select><button id="aid" ${aiBusy?'disabled':''}>Download</button></div>`;B.append(d)}
   if(conn){const q=el$('div');q.innerHTML=`<div class="fr" style="margin-bottom:8px">Read<select id="ais2"><option value="cur" ${a.scope==='cur'?'selected':''}>This workspace</option><option value="all" ${a.scope==='all'?'selected':''}>All unlocked workspaces</option></select></div>
     <div class="fr" style="margin-bottom:8px">Focus note (for “Critique a note”)<select id="aif"><option value="">Whole selection</option>${Object.values(S.notes).filter(n=>!n.mid).map(n=>`<option value="${n.id}">${esc(n.title||'Untitled')}</option>`).join('')}</select></div>
     <div class="atk">${Object.entries(AIT).map(([k,v])=>`<button data-k="${k}" ${aiBusy?'disabled':''}>${v[0]}</button>`).join('')}</div>
@@ -1073,11 +1082,14 @@ function aiPaint(){const B=$('#aib');if(!B)return;const a=ROOT.ai,locked=ROOT.li
   g('#aip').onchange=e=>{a.prov=e.target.value;a.url=AIK[a.prov].url;a.model='';aiModels=null;aiErr='';save();aiPaint()};
   g('#aiu').onchange=e=>{a.url=e.target.value.trim();save()};
   g('#aiu').onkeydown=e=>e.stopPropagation();
-  g('#aic').onclick=async()=>{a.url=g('#aiu').value.trim();aiErr='';aiStat='Checking…';aiPaint();try{aiModels=await aiModelsList();if(!aiModels.includes(a.model))a.model=aiModels[0]||'';aiStat=aiModels.length?'':'Connected, but no models are installed yet. Run “ollama pull llama3.2” in Terminal, then check again.';save()}catch(e){aiModels=null;aiStat='';aiErr='Could not reach a model server at that address. Is Ollama (or your server) running? '+(e.message||'')}aiPaint()};
+  g('#aic').onclick=()=>{a.url=g('#aiu').value.trim();aiCheck()};
+  const so=g('#ais1');if(so)so.onclick=async()=>{aiStat='Starting Ollama…';aiPaint();if(window.tb&&tb.startOllama)await tb.startOllama();for(let i=0;i<8&&aiModels===null;i++){await new Promise(r=>setTimeout(r,1500));await aiCheck(true)}if(aiModels===null){aiStat='';aiErr='Ollama did not start. If it is not installed yet, use “Get Ollama” first.'}aiPaint()};
+  const go=g('#aig');if(go)go.onclick=()=>window.open('https://ollama.com/download','_blank');
+  const dl=g('#aid');if(dl)dl.onclick=()=>aiPull(g('#aidm').value);
   if(conn){g('#aim').onchange=e=>{a.model=e.target.value;save()};g('#aix').onchange=e=>{a.ctx=+e.target.value;save()};g('#ais2').onchange=e=>{a.scope=e.target.value;save()};
     B.querySelectorAll('.atk button').forEach(b=>b.onclick=()=>{aiErr='';aiRun(b.dataset.k)});
     const ask=()=>{const t=g('#aiq').value.trim();if(t){aiErr='';aiRun('ask',t)}};g('#aia').onclick=ask;g('#aiq').onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')ask()}}}
-function openAi(){if(ovOpen)closeOv(1);aiOpen=true;show($('#ai'),'flex');setRW();aiPaint()}
+function openAi(){if(ovOpen)closeOv(1);aiOpen=true;show($('#ai'),'flex');setRW();aiPaint();if(aiModels===null&&!aiBusy)aiCheck(true)}
 function closeAi(q){aiOpen=false;fade($('#ai'));if(!q)setRW()}
 $('#ab').onclick=()=>aiOpen?closeAi():openAi();
 $('#air').onpointerdown=e=>{e.preventDefault();const h=e.currentTarget;h.setPointerCapture(e.pointerId);document.body.classList.add('rs');
