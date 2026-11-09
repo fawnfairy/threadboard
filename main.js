@@ -1,6 +1,6 @@
 // Threadboard desktop shell: local SQLite + files on disk. No server, no account, no network required.
 const { app, BrowserWindow, ipcMain, dialog, shell, Menu, session } = require('electron');
-const path = require('path'), fs = require('fs'), Database = require('better-sqlite3');
+const path = require('path'), fs = require('fs'), http = require('http'), Database = require('better-sqlite3');
 if (process.env.THREADBOARD_DATA_DIR) app.setPath('userData', process.env.THREADBOARD_DATA_DIR);
 const dataDir = path.join(app.getPath('userData'), 'data'), filesDir = path.join(dataDir, 'files');
 const dbPath = path.join(dataDir, 'threadboard.db'), cfgPath = path.join(dataDir, 'settings.json');
@@ -85,22 +85,62 @@ app.whenReady().then(() => {
     const r = okId(id) && db.prepare('SELECT * FROM files WHERE id=?').get(id), p = path.join(filesDir, id || '');
     return r && fs.existsSync(p) ? { meta: { name: r.name, type: r.type, mod: r.mod }, bytes: fs.readFileSync(p) } : null; });
   ipcMain.handle('tb:lib', (e, n) => /^pdf(\.worker)?\.min\.mjs$/.test(n) ? fs.readFileSync(path.join(__dirname, 'node_modules', 'pdfjs-dist', 'build', n), 'utf8') : null);
+  // Optional local AI: the page may only talk to a model server on THIS computer (loopback). No redirects, no other hosts.
+  const netCtl = new Map();
+  const LOOP = new Set(['localhost', '127.0.0.1', '[::1]']);
+  ipcMain.handle('tb:net', async (e, o) => {
+    try {
+      const u = new URL(o.url);
+      if (u.protocol !== 'http:' || !LOOP.has(u.hostname)) return { error: 'Only a server on this computer (localhost) is allowed.' };
+      const ac = new AbortController(); netCtl.set(o.id, ac);
+      try {
+        return await new Promise((res, rej) => {
+          const q = http.request(u, { method: o.method === 'POST' ? 'POST' : 'GET', headers: o.body ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(o.body) } : {}, signal: ac.signal }, r => {
+            const ch = []; let n = 0;
+            r.on('data', d => { n += d.length; if (n > 20e6) { q.destroy(); rej(new Error('Response too large')); } else ch.push(d); });
+            r.on('end', () => res({ status: r.statusCode, body: Buffer.concat(ch).toString('utf8') }));
+          });
+          q.on('error', rej); if (o.body) q.write(o.body); q.end();
+        });
+      } finally { netCtl.delete(o.id); }
+    } catch (x) { return { error: x.name === 'AbortError' ? 'Cancelled (abort)' : String(x.message || x) }; }
+  });
+  ipcMain.on('tb:netCancel', (e, id) => { const a = netCtl.get(id); if (a) a.abort(); });
   ipcMain.handle('tb:fileDel', (e, id) => { if (!okId(id)) return false; fs.rmSync(path.join(filesDir, id), { force: true }); db.prepare('DELETE FROM files WHERE id=?').run(id); return true; });
   win = new BrowserWindow({ width: 1320, height: 840, minWidth: 760, minHeight: 520, title: 'Threadboard', backgroundColor: '#e9edf2',
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
+  // Before closing, let the page encrypt and write its latest edits (protected workspaces are encrypted asynchronously).
+  let flushed = false;
+  win.on('close', e => {
+    if (flushed || process.argv.includes('--smoke-test')) return;
+    e.preventDefault();
+    const done = () => { if (flushed) return; flushed = true; win.close(); };
+    ipcMain.once('tb:flushed', done); win.webContents.send('tb:flush'); setTimeout(done, 4000);
+  });
   win.loadFile(path.join(__dirname, 'app', 'index.html'));
   win.webContents.setWindowOpenHandler(({ url }) => { if (/^https?:/.test(url)) shell.openExternal(url); return { action: 'deny' }; });
   win.webContents.on('will-navigate', (e, u) => { if (!u.startsWith('file://')) { e.preventDefault(); if (/^https?:/.test(u)) shell.openExternal(u); } });
 
   if (process.argv.includes('--smoke-test')) win.webContents.once('did-finish-load', async () => {
+    const mock = http.createServer((q, s) => { s.setHeader('Content-Type', 'application/json'); s.end(JSON.stringify({ models: [{ name: 'smoke-model' }] })); });
+    await new Promise(x => mock.listen(0, '127.0.0.1', x)); const port = mock.address().port;
     try {
       const r = await win.webContents.executeJavaScript(`(async()=>{const o={bridge:typeof window.tb==='object'};
         const n=newNote(40,40,false,'Smoke');o.created=!!N[n.id];
         const f=new File([new Uint8Array([1,2,3])],'smoke.bin',{type:'application/octet-stream'});
-        o.filePut=(await idb('put','smoke123',f))==='smoke123';const g=await idb('get','smoke123');o.fileGet=!!g&&g.size===3;save();return o})()`);
+        o.filePut=(await idb('put','smoke123',f))==='smoke123';const g=await idb('get','smoke123');o.fileGet=!!g&&g.size===3;save();
+        const w={id:'smokevault',name:'Smoke vault',created:Date.now(),mod:Date.now(),view:{x:0,y:0,k:1},notes:{a:{id:'a',title:'S',body:'SMOKESECRETTEXT',x:0,y:0,w:200,c:0}},edges:[]};ROOT.list.push(w);
+        const d=await newDek();KEYS[w.id]=d;const sl=rnd(16),k=await kdf('smoke password',sl,1000);w.sec={wp:{s:b64(sl),i:1000,...await wrapDek(k,d)}};await persist();
+        await lockWs(w);o.locked=w.locked===true&&Object.keys(w.notes).length===0;o.wrongPw=(await dekFor(w,'nope'))===null;
+        const dd=await dekFor(w,'smoke password');if(dd)await openWithDek(w,dd);o.unlocked=!!dd&&!!w.notes.a&&w.notes.a.body==='SMOKESECRETTEXT';
+        o.netBlocked=((await tb.net({url:'http://example.com/',method:'GET',id:'x1'})).error||'').includes('localhost');
+        const nr=await tb.net({url:'http://127.0.0.1:'+${port}+'/api/tags',method:'GET',id:'x2'});o.netLocal=nr.status===200&&nr.body.includes('smoke-model');
+        await persist();return o})()`);
       await new Promise(x => setTimeout(x, 900));
+      const raw = db.prepare('SELECT data FROM workspaces').all().map(r => r.data).join('');
+      r.encryptedAtRest = !raw.includes('SMOKESECRETTEXT') && raw.includes('"enc"');
       const c = db.prepare('SELECT COUNT(*) c FROM workspaces').get().c;
-      const ok = r.bridge && r.created && r.filePut && r.fileGet && c >= 1 && fs.existsSync(path.join(filesDir, 'smoke123'));
+      const ok = r.bridge && r.created && r.filePut && r.fileGet && r.locked && r.wrongPw && r.unlocked && r.netBlocked && r.netLocal && r.encryptedAtRest && c >= 1 && fs.existsSync(path.join(filesDir, 'smoke123'));
       console.log('SMOKE ' + JSON.stringify({ ...r, workspaces: c, dbPath, ok })); app.exit(ok ? 0 : 1);
     } catch (e) { console.log('SMOKE FAIL ' + e); app.exit(1); }
   });

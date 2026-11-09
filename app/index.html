@@ -183,7 +183,32 @@ body.sc #so{animation:pin var(--dur) var(--ease)}
 body.rs #stage,body.rs #graph{transition:none}body.rs{user-select:none;cursor:col-resize}
 #ovr{position:absolute;left:-5px;top:0;bottom:0;width:11px;cursor:col-resize;z-index:2}
 #ovr::after{content:"";position:absolute;left:5px;top:0;bottom:0;width:2px;background:transparent;transition:background .15s}
-#ovr:hover::after,body.rs #ovr::after{background:var(--line)}
+#ovr:hover::after,body.rs #ovr::after,#air:hover::after,body.rs #air::after{background:var(--line)}
+#air{position:absolute;left:-5px;top:0;bottom:0;width:11px;cursor:col-resize;z-index:2}
+#air::after{content:"";position:absolute;left:5px;top:0;bottom:0;width:2px;background:transparent;transition:background .15s}
+#ai{position:fixed;top:0;right:0;bottom:0;min-width:280px;background:var(--ui);border-left:1px solid var(--edge);box-shadow:var(--shadow);display:none;z-index:6}
+#ai.out .ovc{animation:sout .14s ease forwards}
+#ab{position:fixed;top:12px;right:58px;z-index:7;width:38px;height:38px;border-radius:10px;background:var(--ui);border:1px solid var(--edge);box-shadow:var(--shadow);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+#ab:hover{background:var(--bg)}#ab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#ab:hover::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);right:0;background:var(--ink);color:var(--bg);padding:5px 9px;border-radius:7px;font-size:12px;white-space:nowrap;pointer-events:none}
+#ai .ovh{padding-right:100px}
+#aib{overflow:auto;line-height:1.5;font-size:13px;display:flex;flex-direction:column;gap:12px;padding-bottom:20px}
+#aib p{margin:0}#aib .nt{color:var(--mute);font-size:12px}
+#aib details{border:1px solid var(--edge);border-radius:10px;padding:8px 10px}#aib summary{cursor:pointer;font-weight:500}
+#aib .fr{display:flex;flex-direction:column;gap:4px;margin-top:8px;font-size:12px;color:var(--mute)}
+#aib select,#aib input[type=text]{font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--edge);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+#aib button{font:inherit;font-size:12.5px;padding:6px 10px;border-radius:8px;border:1px solid var(--edge);background:var(--bg);color:var(--ink);cursor:pointer}
+#aib button:hover{background:var(--card)}#aib button:disabled{opacity:.5;cursor:default}
+.atk{display:grid;grid-template-columns:1fr 1fr;gap:6px}.atk button{text-align:left}
+.aq{display:flex;gap:6px}.aq input{flex:1}
+.ast{padding:9px 10px;border-radius:10px;background:var(--bg);color:var(--mute);font-size:12.5px}
+.ast.er{color:#d0453c}
+.acd{border:1px solid var(--edge);border-radius:10px;padding:10px 11px;display:flex;flex-direction:column;gap:6px}
+.acd h5{margin:0;font-size:13.5px}.acd .tg{font-size:11px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.acd .tg.n{color:#3a9d6e}.acd .tg.m{color:#c07a1c}
+.acd.m{border-style:dashed}
+.acd .sr{display:flex;flex-wrap:wrap;gap:4px}.acd .sr span{font-size:11.5px;padding:1px 8px;border-radius:99px;background:var(--bg);cursor:pointer;border:1px solid var(--edge)}
+.acd .bt{display:flex;gap:6px;flex-wrap:wrap}
 .ovh{padding-right:46px}#ovb{flex:1;min-height:0}
 #hb{position:fixed;top:12px;right:12px;z-index:7;width:38px;height:38px;border-radius:10px;background:var(--ui);border:1px solid var(--edge);box-shadow:var(--shadow);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
 #hb:hover{background:var(--bg)}
@@ -292,6 +317,21 @@ body.rs #stage,body.rs #graph{transition:none}body.rs{user-select:none;cursor:co
 .yb button.pp{width:34px;height:34px;font-size:12px}.yb .yc button{padding:0}
 .yb button.md{width:auto;height:auto;border-radius:7px;padding:4px 9px;background:none;border:1px solid var(--edge);color:var(--ink);font-size:11px}
 .yv .vol{flex:1}
+#wl .lkb{border:0;background:none;color:var(--mute);padding:0 2px;display:grid;place-items:center;cursor:pointer;flex:none;border-radius:5px}
+#wl .lkb svg,.mn .li svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block}
+#wl .lkb:hover{color:var(--ink)}#wl .lkb.op{color:#3a9d6e}
+#wl li.prot .nm{flex:0 1 auto}#wl li.prot em{margin-left:auto}
+.mn .li{display:inline-grid;vertical-align:-2px;margin-left:4px}
+.dlgbg{position:fixed;inset:0;background:rgba(20,30,50,.35);display:grid;place-items:center;z-index:60;animation:fin var(--dur) var(--ease)}
+.dlg{width:min(380px,calc(100vw - 32px));background:var(--ui);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px;font-size:13.5px}
+.dlg b{font-size:17px}.dlg p{margin:0;color:var(--mute);line-height:1.5}
+.dlg label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mute)}
+.dlg label.ck{flex-direction:row;align-items:center;gap:8px;font-size:13px;color:var(--ink)}
+.dlg input[type=password]{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--edge);border-radius:8px;background:var(--bg);color:var(--ink)}
+.dlg .er{min-height:16px;color:#d0453c;font-size:12.5px}
+.dlg .bt{display:flex;justify-content:flex-end;gap:8px}
+.dlg .bt button{font:inherit;padding:7px 14px;border-radius:8px;border:1px solid var(--edge);background:var(--bg);color:var(--ink);cursor:pointer}
+.dlg .bt .ok{background:var(--line);color:#fff;border-color:var(--line)}.dlg .bt button:disabled{opacity:.6}
 </style>
 </head>
 <body>
@@ -311,9 +351,11 @@ body.rs #stage,body.rs #graph{transition:none}body.rs{user-select:none;cursor:co
 <select id="gsp" title="Speed"><option value=".5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
 <input type="range" id="gsl" min="0" max="1000" value="1000" title="Drag to view the graph at any point in time"><div id="gdt"></div></div><div id="gtip"></div>
 <div id="gh"><span id="gc"></span><button id="gb">Back to board</button></div></div>
+<button id="ab" data-tip="AI assistant (optional · runs on this computer)" aria-label="AI assistant"><svg viewBox="0 0 24 24"><path d="M11 4l1.7 4.3L17 10l-4.3 1.7L11 16l-1.7-4.3L5 10l4.3-1.7z"/><path d="M18 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></button>
 <button id="hb" data-tip="History — summary and session log" aria-label="History"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></button>
 <div id="ov"><div id="ovr" title="Drag to resize"></div><div class="ovc"><div class="ovh"><div><b id="ovt"></b><small id="ovd"></small></div></div>
 <div class="seg" id="ovs"><button data-t="s">Overall summary</button><button data-t="h">History</button></div><div id="ovb"></div></div></div>
+<div id="ai"><div id="air" title="Drag to resize"></div><div class="ovc"><div class="ovh"><div><b>AI assistant</b><small>Optional · runs on this computer · nothing leaves it</small></div></div><div id="aib"></div></div></div>
 <div id="ow"><div class="owc"><div class="owh"><b>Proposed linked web</b><small id="ows"></small></div>
 <div class="owb"><svg id="owv"></svg><div id="owl"></div></div>
 <div class="owf"><span>Nothing is added to your workspace until you accept. Click a dot to leave it out.</span><button id="owx">Cancel</button><button id="owa"></button></div></div></div>
@@ -328,19 +370,73 @@ body.rs #stage,body.rs #graph{transition:none}body.rs{user-select:none;cursor:co
 const $=s=>document.querySelector(s), stage=$('#stage'), world=$('#world'), svg=$('#links');
 const uid=()=>Math.random().toString(36).slice(2,9), LK=/\[\[([^\[\]]+?)\]\]/g;
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+/* ---- encryption: AES-256-GCM, keys from PBKDF2-SHA256. Protected workspaces are encrypted before anything is written to disk. ---- */
+const KEYS={},FKEYS={},ITER=600000,te=new TextEncoder(),td=new TextDecoder();
+const b64=u=>{let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)},
+  unb=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+const kdf=async(pw,salt,it)=>{const m=await crypto.subtle.importKey('raw',te.encode(pw.normalize('NFKC')),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt,iterations:it},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])};
+const aesE=async(k,u8)=>{const iv=rnd(12);return{iv:b64(iv),ct:b64(new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,u8)))}};
+const aesD=async(k,o)=>new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:unb(o.iv)},k,unb(o.ct)));
+const newDek=()=>crypto.subtle.generateKey({name:'AES-GCM',length:256},true,['encrypt','decrypt']);
+const wrapDek=async(kek,dek)=>aesE(kek,new Uint8Array(await crypto.subtle.exportKey('raw',dek)));
+const unwrapDek=async(kek,o)=>crypto.subtle.importKey('raw',await aesD(kek,o),'AES-GCM',true,['encrypt','decrypt']);
+const sha256=(()=>{const P=[];for(let n=2;P.length<64;n++)if(P.every(p=>n%p))P.push(n);
+  const fr=x=>Math.floor((x-Math.floor(x))*4294967296)>>>0,K=P.map(p=>fr(Math.cbrt(p))),H0=P.slice(0,8).map(p=>fr(Math.sqrt(p))),rr=(x,s)=>(x>>>s)|(x<<(32-s));
+  return str=>{const b=te.encode(str),l=b.length,n=((l+72)>>6)<<6,m=new Uint8Array(n);m.set(b);m[l]=128;
+    const dv=new DataView(m.buffer);dv.setUint32(n-8,Math.floor(l*8/4294967296));dv.setUint32(n-4,(l*8)>>>0);
+    const h=H0.slice(),w=new Uint32Array(64);
+    for(let o=0;o<n;o+=64){for(let i=0;i<16;i++)w[i]=dv.getUint32(o+i*4);
+      for(let i=16;i<64;i++){const a=w[i-15],c=w[i-2];w[i]=(w[i-16]+(rr(a,7)^rr(a,18)^(a>>>3))+w[i-7]+(rr(c,17)^rr(c,19)^(c>>>10)))>>>0}
+      let[a,b2,c,d,e,f,g,hh]=h;
+      for(let i=0;i<64;i++){const t1=(hh+(rr(e,6)^rr(e,11)^rr(e,25))+((e&f)^(~e&g))+K[i]+w[i])>>>0,t2=((rr(a,2)^rr(a,13)^rr(a,22))+((a&b2)^(a&c)^(b2&c)))>>>0;
+        hh=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b2;b2=a;a=(t1+t2)>>>0}
+      [a,b2,c,d,e,f,g,hh].forEach((v,i)=>h[i]=(h[i]+v)>>>0)}
+    return h.map(x=>x.toString(16).padStart(8,'0')).join('')}})();
+/* a protected workspace is saved as: plain header (id, name, folder, dates) + encrypted payload (everything else).
+   rf = salted hashes of note titles so an @reference typed by the user can still find its target without any title being stored. */
+const HDR=['id','name','created','mod','f','ci','sec','rf','fm','enc'];
+const plainOut=w=>{const o={};for(const k in w)if(k!=='locked'&&k[0]!=='_')o[k]=w[k];return o},hdrOut=w=>{const o={};for(const k of HDR)if(w[k]!==undefined)o[k]=w[k];return o};
+const rfHash=(s,t)=>sha256(s+'|'+t.trim().toLowerCase()).slice(0,24);
+async function wsOut(w){
+  if(!w.sec)return plainOut(w);
+  const o=hdrOut(w);if(w.locked)return o;
+  const p={};for(const k in w)if(!HDR.includes(k)&&k!=='locked'&&k[0]!=='_')p[k]=w[k];
+  o.enc=await aesE(KEYS[w.id],te.encode(JSON.stringify(p)));
+  const sl=(w.rf&&w.rf.s)||b64(rnd(12)),h={};for(const n of Object.values(w.notes))if(n.title&&n.title.trim())h[rfHash(sl,n.title)]=n.id;
+  o.rf={s:sl,h};o.fm=[...new Set(Object.values(w.notes).flatMap(n=>[n.mid,...(n.im||[]).map(i=>i.mid)].filter(Boolean)))];
+  w.rf=o.rf;w.fm=o.fm;w.enc=o.enc;w._o=o;return o}
+async function serialize(){const l=[];for(const w of ROOT.list)l.push(await wsOut(w));return JSON.stringify({...ROOT,list:l})}
+const serializeSync=()=>JSON.stringify({...ROOT,list:ROOT.list.map(w=>w.sec?(w.locked?hdrOut(w):(w._o||hdrOut(w))):plainOut(w))});
+let _seq=0,_done=0;
+async function persist(){const q=++_seq,j=await serialize();if(q<_done)return j;_done=q;store(j);return j}
+const flushNow=()=>{clearTimeout(saveT);try{touchMod()}catch(e){}return persist()};
+/* attached files: encrypted per file (4 MB chunks) whenever they belong to a protected workspace */
+const MAGIC=te.encode('TBENC1\0\0'),isEnc=u=>MAGIC.every((b,i)=>u[i]===b),CH=4<<20;
+async function encFile(wid,f){const k=KEYS[wid],out=[MAGIC,Uint8Array.of(wid.length),te.encode(wid)],u=new Uint8Array(await f.arrayBuffer()),
+    parts=[te.encode(JSON.stringify({n:f.name||'file',t:f.type,m:f.lastModified}))];
+  for(let i=0;i<u.length;i+=CH)parts.push(u.subarray(i,i+CH));
+  for(const p of parts){const iv=rnd(12),ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,p)),h=new Uint8Array(4);new DataView(h.buffer).setUint32(0,ct.length+12);out.push(h,iv,ct)}
+  return new File(out,'enc',{type:'application/octet-stream'})}
+async function decFile(blob){const u=new Uint8Array(await blob.arrayBuffer());if(!isEnc(u))return blob;
+  let p=8;const L=u[p++],wid=td.decode(u.subarray(p,p+L));p+=L;const k=KEYS[wid];if(!k)return null;
+  const dv=new DataView(u.buffer,u.byteOffset),parts=[];
+  while(p<u.length){const n=dv.getUint32(p);p+=4;const iv=u.subarray(p,p+12),ct=u.subarray(p+12,p+n);p+=n;parts.push(new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv},k,ct)))}
+  const h=JSON.parse(td.decode(parts.shift()));return new File(parts,h.n,{type:h.t,lastModified:h.m})}
 const store=j=>window.tb?tb.save(j):localStorage.setItem('threadboard',j),storeSync=j=>window.tb?tb.saveSync(j):localStorage.setItem('threadboard',j);
 let ROOT=null; try{ROOT=JSON.parse(window.tb?tb.loadSync():localStorage.getItem('threadboard'))}catch(e){}
 if(ROOT&&ROOT.notes)ROOT={cur:'w1',list:[{id:'w1',name:'My board',...ROOT}]};
-let S=ROOT&&ROOT.list?ROOT.list.find(w=>w.id===ROOT.cur)||ROOT.list[0]:null;
+if(ROOT&&ROOT.list)for(const w of ROOT.list)if(w.sec){w.locked=true;w.notes={};w.edges=[];w.view={x:290,y:70,k:1}}   // protected workspaces start locked: no content is in memory
+let S=ROOT&&ROOT.list?(ROOT.list.find(w=>w.id===ROOT.cur&&!w.locked)||ROOT.list.find(w=>!w.locked)):null;
 if(!S){
-  S={id:'w1',name:'My board',created:Date.now(),mod:Date.now(),view:{x:290,y:70,k:1},notes:{}};
+  S={id:ROOT&&ROOT.list&&ROOT.list.some(w=>w.id==='w1')?Math.random().toString(36).slice(2,9):'w1',name:'My board',created:Date.now(),mod:Date.now(),view:{x:290,y:70,k:1},notes:{}};
   const a=uid(),b=uid(),c=uid();
   S.notes[a]={id:a,title:'Welcome',x:60,y:60,w:300,c:2,body:'This is an infinite board. Drag the background to pan, pinch or ⌘-scroll to zoom, double-click empty space to add a note.\n\nType a link like [[Linking]] to connect notes. See also [[Shortcuts]].'};
   S.notes[b]={id:b,title:'Linking',x:470,y:20,w:280,c:0,body:'Any [[Title]] you write becomes a line on the board. Missing notes are created for you, and backlinks appear at the bottom of each card.'};
   S.notes[c]={id:c,title:'Shortcuts',x:470,y:230,w:280,c:1,body:'N  new note\n⌘K  find a note\n0  fit everything\nClick the circle on a card to change its color.'};
 }
-ROOT=ROOT&&ROOT.list?ROOT:{cur:S.id,list:[S]};ROOT.cur=S.id;let N=S.notes; const els={}; let saveT;
-function save(){counts();clearTimeout(saveT);saveT=setTimeout(()=>{touchMod();try{store(JSON.stringify(ROOT))}catch(e){toast('Could not autosave — use Export to back up')}},250)}
+ROOT=ROOT&&ROOT.list?ROOT:{cur:S.id,list:[S]};if(!ROOT.list.includes(S))ROOT.list.unshift(S);ROOT.cur=S.id;let N=S.notes; const els={}; let saveT;
+function save(){counts();clearTimeout(saveT);saveT=setTimeout(()=>{touchMod();persist().catch(e=>toast('Could not autosave — use Export to back up'))},250)}
 function toast(m){const t=$('#toast');t.textContent=m;t.style.opacity=1;clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity=0,2200)}
 const byTitle=t=>Object.values(N).find(n=>n.title.trim().toLowerCase()===t.trim().toLowerCase());
 const linksOf=n=>[...n.body.matchAll(LK)].map(m=>m[1].trim());
@@ -390,10 +486,16 @@ function preview(u){const d=el$('div','pv');
   return d}
 const db=new Promise(r=>{try{const q=indexedDB.open('threadboard',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}});
 const idb0=(m,k,v)=>db.then(d=>d&&new Promise(r=>{const s=d.transaction('f',m==='get'?'readonly':'readwrite').objectStore('f'),q=m==='get'?s.get(k):m==='put'?s.put(v,k):s.delete(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}));
-const idb=window.tb?async(m,k,v)=>{
+const idbRaw=window.tb?async(m,k,v)=>{
   if(m==='get'){const r=await tb.fileGet(k);return r?new File([r.bytes],r.meta.name,{type:r.meta.type,lastModified:r.meta.mod}):undefined}
   if(m==='put')return(await tb.filePut(k,{name:v.name||'file',type:v.type,mod:v.lastModified},await v.arrayBuffer()))?k:undefined;
   return tb.fileDel(k)}:idb0;
+const idb=async(m,k,v)=>{
+  if(m==='get'){const f=await idbRaw('get',k);return f?decFile(f):f}
+  if(m==='put'){let f=v;const pre=isEnc(new Uint8Array(await v.slice(0,8).arrayBuffer()));
+    if(pre)f=new File([v],'enc',{type:'application/octet-stream'});else if(S&&S.sec&&!S.locked&&KEYS[S.id])f=await encFile(S.id,v);
+    return idbRaw('put',k,f)}
+  return idbRaw(m,k)};
 const du=f=>new Promise(r=>{const q=new FileReader();q.onload=()=>r(q.result);q.readAsDataURL(f)});
 const BLOCK=/\.(exe|msi|bat|cmd|scr|com|dmg|pkg|app|apk|ipa|dll|sys|vbs|ps1)$/i;
 const fmt=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB';
@@ -450,46 +552,47 @@ svg.addEventListener('click',e=>{const id=e.target.dataset&&e.target.dataset.e;
 const LW=()=>ROOT.sc?0:(ROOT.sw||250);
 function setSide(){document.body.classList.toggle('sc',!!ROOT.sc);document.documentElement.style.setProperty('--lw',LW()+'px');document.documentElement.style.setProperty('--sw',(ROOT.sw||250)+'px')}
 $('#sc').onclick=()=>{ROOT.sc=1;setSide();save()};$('#so').onclick=()=>{ROOT.sc=0;setSide();save()};
-function counts(){$('#wl').querySelectorAll('li[data-w]').forEach(li=>{const w=ROOT.list.find(x=>x.id===li.dataset.w);if(w)li.querySelector('em').textContent=Object.keys(w.notes).length});
+function counts(){$('#wl').querySelectorAll('li[data-w]').forEach(li=>{const w=ROOT.list.find(x=>x.id===li.dataset.w);if(w)li.querySelector('em').textContent=w.locked?'':Object.keys(w.notes).length});
   
   $('#empty').style.display=Object.keys(N).length?'none':'block'}
 const fmtT=t=>new Date(t).toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
 let _h='',_id='',dnd=null;
 function touchMod(){const h=JSON.stringify([S.notes,S.edges]);const ch=_id===S.id&&h!==_h;if(ch){S.mod=Date.now();reconcile(S);if(SS&&Date.now()-SS.last>18e5){endSession();SS=newSS()}if(SS)SS.last=Date.now()}_id=S.id;_h=h;counts();if(ovOpen)ovRender()}
 function side(){const l=$('#wl');l.innerHTML='';ROOT.fo=ROOT.fo||[];
-  for(const f of ROOT.fo){folderRow(f,l);if(f.open!==false)ROOT.list.filter(w=>w.f===f.id).forEach(w=>wsItem(w,l))}
+  for(const f of ROOT.fo){folderRow(f,l);if(f.open!==false&&!fLocked(f))ROOT.list.filter(w=>w.f===f.id).forEach(w=>wsItem(w,l))}
   ROOT.list.filter(w=>!w.f||!ROOT.fo.some(f=>f.id===w.f)).forEach(w=>wsItem(w,l));counts()}
-function wsItem(w,l){const inF=w.f&&ROOT.fo.some(f=>f.id===w.f),li=el$('li',(w===S?'on ':'')+(inF?'in':''),{draggable:true,title:`Created ${fmtT(w.created)}\nEdited ${fmtT(w.mod)}`}),
-    nm=el$('span','nm',{textContent:w.name}),ct=el$('em','',{textContent:Object.keys(w.notes).length}),x=el$('button','wx',{textContent:'×',title:'Delete workspace'});
-  li.dataset.w=w.id;li.append(nm,ct,x);li.onclick=e=>{if(e.detail>1||e.target.isContentEditable)return;w===S?openOv():openWs(w.id)};
+function wsItem(w,l){const inF=w.f&&ROOT.fo.some(f=>f.id===w.f),li=el$('li',(w===S?'on ':'')+(inF?'in':'')+(w.sec?' prot':''),{draggable:true,title:`Created ${fmtT(w.created)}\nEdited ${fmtT(w.mod)}`}),
+    nm=el$('span','nm',{textContent:w.name}),ct=el$('em','',{textContent:w.locked?'':Object.keys(w.notes).length}),x=el$('button','wx',{textContent:'×',title:'Delete workspace'});
+  li.dataset.w=w.id;li.append(nm,...(w.sec?[lockBtn(w)]:[]),ct,x);li.onclick=e=>{if(e.detail>1||e.target.isContentEditable)return;w===S?openOv():openWs(w.id)};
   nm.ondblclick=e=>{e.stopPropagation();ren(nm,w)};x.onclick=e=>{e.stopPropagation();delWs(w)};
   li.ondragstart=e=>{dnd={t:'w',id:w.id};e.dataTransfer.setData('text/plain',w.id)};
   li.ondragover=e=>{if(dnd&&dnd.t==='w'){e.preventDefault();li.classList.add('dr')}};li.ondragleave=()=>li.classList.remove('dr');
-  li.ondrop=e=>{e.preventDefault();e.stopPropagation();const m=dnd&&dnd.t==='w'&&ROOT.list.find(x=>x.id===dnd.id);
-    if(m&&m!==w){ROOT.list.splice(ROOT.list.indexOf(m),1);ROOT.list.splice(ROOT.list.indexOf(w),0,m);m.f=inF?w.f:null;save();side()}dnd=null};
+  li.ondrop=async e=>{e.preventDefault();e.stopPropagation();const d=dnd;dnd=null;const m=d&&d.t==='w'&&ROOT.list.find(x=>x.id===d.id);
+    if(m&&m!==w){if(!(await moveWs(m,inF?w.f:null))){side();return}ROOT.list.splice(ROOT.list.indexOf(m),1);ROOT.list.splice(ROOT.list.indexOf(w),0,m);save();side()}};
   l.append(li)}
 function folderRow(f,l){const li=el$('li','fo',{draggable:true}),ch=el$('span','ch',{textContent:'▾'}),nm=el$('span','nm',{textContent:f.name}),
-    ct=el$('em','',{textContent:ROOT.list.filter(w=>w.f===f.id).length}),x=el$('button','wx',{textContent:'×',title:'Delete folder (workspaces move out)'});
-  li.append(ch,nm,ct,x);ch.style.transform=f.open===false?'rotate(-90deg)':'';
+    ct=el$('em','',{textContent:fLocked(f)?'':ROOT.list.filter(w=>w.f===f.id).length}),x=el$('button','wx',{textContent:'×',title:'Delete folder (workspaces move out)'});
+  li.dataset.f=f.id;if(f.sec)li.classList.add('prot');li.append(ch,nm,...(f.sec?[folLock(f)]:[]),ct,x);ch.style.transform=f.open===false?'rotate(-90deg)':'';
   li.onclick=e=>{if(e.detail>1||e.target.isContentEditable)return;
+    if(fLocked(f)){unlockFolder(f).then(ok=>{if(ok){f.open=true;save();side()}});return}
     if(f.open!==false){const it=[];for(let q=li.nextElementSibling;q&&q.classList.contains('in');q=q.nextElementSibling)it.push(q);
       it.forEach(i=>i.classList.add('col'));ch.style.transform='rotate(-90deg)';setTimeout(()=>{f.open=false;save();side()},230)}
     else{f.open=true;save();side();$('#wl').querySelectorAll('li.in').forEach(i=>{const w=ROOT.list.find(x=>x.id===i.dataset.w);if(w&&w.f===f.id)i.classList.add('enter')})}};
   nm.ondblclick=e=>{e.stopPropagation();renF(nm,f)};
-  x.onclick=e=>{e.stopPropagation();if(!confirm(`Delete folder “${f.name}”? Its workspaces will move out, not be deleted.`))return;
-    ROOT.list.forEach(w=>{if(w.f===f.id)w.f=null});ROOT.fo.splice(ROOT.fo.indexOf(f),1);save();side()};
+  x.onclick=async e=>{e.stopPropagation();if(f.sec&&!(await unlockFolder(f)))return;if(!confirm(`Delete folder “${f.name}”? Its workspaces will move out, not be deleted${f.sec?' (they lose this folder’s password protection)':''}.`))return;
+    for(const w of ROOT.list.filter(w=>w.f===f.id))await moveWs(w,null,1);ROOT.fo.splice(ROOT.fo.indexOf(f),1);delete FKEYS[f.id];save();side()};
   li.ondragstart=e=>{dnd={t:'f',id:f.id};e.dataTransfer.setData('text/plain',f.id)};
   li.ondragover=e=>{if(dnd){e.preventDefault();li.classList.add('dr')}};li.ondragleave=()=>li.classList.remove('dr');
-  li.ondrop=e=>{e.preventDefault();e.stopPropagation();
-    if(dnd&&dnd.t==='w'){const m=ROOT.list.find(x=>x.id===dnd.id);if(m){m.f=f.id;f.open=true}}
-    else if(dnd&&dnd.t==='f'&&dnd.id!==f.id){const m=ROOT.fo.find(x=>x.id===dnd.id);ROOT.fo.splice(ROOT.fo.indexOf(m),1);ROOT.fo.splice(ROOT.fo.indexOf(f),0,m)}
-    dnd=null;save();side()};
+  li.ondrop=async e=>{e.preventDefault();e.stopPropagation();const d=dnd;dnd=null;
+    if(d&&d.t==='w'){const m=ROOT.list.find(x=>x.id===d.id);if(m&&(await moveWs(m,f.id)))f.open=true}
+    else if(d&&d.t==='f'&&d.id!==f.id){const m=ROOT.fo.find(x=>x.id===d.id);ROOT.fo.splice(ROOT.fo.indexOf(m),1);ROOT.fo.splice(ROOT.fo.indexOf(f),0,m)}
+    save();side()};
   l.append(li)}
 function renF(nm,f){nm.closest('li').draggable=false;nm.contentEditable='plaintext-only';nm.focus();getSelection().selectAllChildren(nm);
   nm.onblur=()=>{nm.contentEditable='false';f.name=nm.textContent.trim()||f.name;nm.textContent=f.name;save()};
   nm.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();nm.blur()}if(e.key==='Escape'){nm.textContent=f.name;nm.blur()}};nm.onclick=e=>e.stopPropagation()}
 $('#wl').ondragover=e=>{if(dnd&&dnd.t==='w')e.preventDefault()};
-$('#wl').ondrop=e=>{const m=dnd&&dnd.t==='w'&&ROOT.list.find(x=>x.id===dnd.id);if(m){m.f=null;save();side()}dnd=null};
+$('#wl').ondrop=async e=>{const d=dnd;dnd=null;const m=d&&d.t==='w'&&ROOT.list.find(x=>x.id===d.id);if(m){await moveWs(m,null);save();side()}};
 const newFolder=()=>{const f={id:uid(),name:'New folder',open:true};(ROOT.fo=ROOT.fo||[]).push(f);side();renF([...$('#wl').querySelectorAll('li.fo')].pop().querySelector('.nm'),f)};
 function ren(nm,w){nm.closest('li').draggable=false;nm.contentEditable='plaintext-only';nm.focus();getSelection().selectAllChildren(nm);
   nm.onblur=()=>{nm.contentEditable='false';const o=w.name;w.name=nm.textContent.trim()||o;nm.textContent=w.name;
@@ -497,17 +600,139 @@ function ren(nm,w){nm.closest('li').draggable=false;nm.contentEditable='plaintex
       for(const k in els)els[k].querySelector('.ed').value=N[k].body;refresh()}save()};
   nm.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();nm.blur()}if(e.key==='Escape'){nm.textContent=w.name;nm.blur()}};nm.onclick=e=>e.stopPropagation()}
 function openWs(id){const w=ROOT.list.find(x=>x.id===id);if(!w||w===S)return;
+  if(w.locked){unlockWs(w).then(ok=>ok&&openWs(id));return}
   if(document.activeElement)document.activeElement.blur();fade(pp);
   for(const k in els){els[k].remove();delete els[k]}pads.replaceChildren();
-  endSession();S=w;N=S.notes;S.edges=S.edges||[];ROOT.cur=id;SS=newSS();theme();Object.values(N).forEach(build);refresh();apply();side();if(gOpen)gInit()}
-function delWs(w){if(ROOT.list.length<2){toast('Keep at least one workspace');return}
+  const prev=S;endSession();S=w;N=S.notes;S.edges=S.edges||[];ROOT.cur=id;SS=newSS();theme();Object.values(N).forEach(build);refresh();apply();side();if(gOpen)gInit();
+  if(prev&&prev.sec&&prev.sec.al&&!prev.locked)lockWs(prev)}
+async function delWs(w){const others=ROOT.list.filter(x=>x!==w);if(!others.length){toast('Keep at least one workspace');return}
+  if(w.locked&&!(await unlockWs(w)))return;
+  if(w===S&&!others.some(x=>!x.locked)){toast('Keep at least one unlocked workspace');return}
   if(!confirm(`Delete “${w.name}” and its ${Object.keys(w.notes).length} notes?`))return;
   const ms=Object.values(w.notes).flatMap(midsOf);
   const i=ROOT.list.indexOf(w);
-  if(w===S)openWs(ROOT.list[i?i-1:1].id);
-  ROOT.list.splice(i,1);ms.forEach(freeMid);side();save()}
+  if(w===S)openWs((others.find(x=>x===ROOT.list[i?i-1:1]&&!x.locked)||others.find(x=>!x.locked)).id);
+  ROOT.list.splice(i,1);delete KEYS[w.id];ms.forEach(freeMid);side();save()}
 const newWs=()=>{const w={id:uid(),name:'Untitled workspace',created:Date.now(),mod:Date.now(),view:{x:290,y:70,k:1},notes:{},edges:[]};
   ROOT.list.push(w);openWs(w.id);ren($('#wl').lastChild.querySelector('.nm'),w)};
+
+/* ---- password protection: dialogs, lock / unlock, folder keys ---- */
+const IC_C='<svg viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.6"/><path d="M5.2 7V5a2.8 2.8 0 015.6 0v2"/></svg>',
+  IC_O='<svg viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1.6"/><path d="M5.2 7V5a2.8 2.8 0 015.4-.9"/></svg>';
+const fOf=w=>w.f&&ROOT.fo.find(x=>x.id===w.f),fLocked=f=>!!(f&&f.sec&&!FKEYS[f.id]),pwOk=v=>v.length<8?'Use at least 8 characters.':null;
+function dlg(o){return new Promise(res=>{
+  const bg=el$('div','dlgbg'),box=el$('form','dlg');
+  box.innerHTML=`<b>${esc(o.title)}</b>${o.note?`<p>${esc(o.note)}</p>`:''}`+o.fields.map(f=>`<label>${esc(f[1])}<input type="password" data-i="${f[0]}" autocomplete="off"></label>`).join('')+
+    (o.opts||[]).map(([k,t,v])=>`<label class="ck"><input type="checkbox" data-o="${k}" ${v?'checked':''}> ${esc(t)}</label>`).join('')+
+    `<div class="er"></div><div class="bt"><button type="button" class="cn">Cancel</button><button type="submit" class="ok">${esc(o.ok||'OK')}</button></div>`;
+  bg.append(box);document.body.append(bg);setTimeout(()=>{const i=box.querySelector('input');i&&i.focus()},30);
+  const done=v=>{bg.remove();res(v)};
+  box.querySelector('.cn').onclick=()=>done(null);
+  bg.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')done(null)});
+  box.onsubmit=async e=>{e.preventDefault();const v={};box.querySelectorAll('input[data-i]').forEach(i=>v[i.dataset.i]=i.value);box.querySelectorAll('input[data-o]').forEach(i=>v[i.dataset.o]=i.checked);
+    const er=box.querySelector('.er'),ok=box.querySelector('.ok');er.textContent='';ok.disabled=true;ok.textContent='Working…';
+    let m=null;try{m=o.check?await o.check(v):null}catch(x){m='Something went wrong: '+x}
+    if(m){er.textContent=m;ok.disabled=false;ok.textContent=o.ok||'OK';return}done(v)}})}
+const pwCheck=(wrap,pw)=>kdf(pw,unb(wrap.s),wrap.i).then(k=>unwrapDek(k,wrap)).then(()=>true,()=>false);
+const fVerify=(f,pw)=>kdf(pw,unb(f.sec.s),f.sec.i).then(k=>aesD(k,f.sec.v).then(t=>td.decode(t)==='tb-folder-ok'?k:null)).catch(()=>null);
+const sideAfter=()=>{side();refresh();if(gOpen)gInit()};
+async function openWithDek(w,dek){const p=JSON.parse(td.decode(await aesD(dek,w.enc)));Object.assign(w,p);w.notes=w.notes||{};w.edges=w.edges||[];KEYS[w.id]=dek;w.locked=false}
+async function dekFor(w,pw){
+  if(w.sec.wp){try{return await unwrapDek(await kdf(pw,unb(w.sec.wp.s),w.sec.wp.i),w.sec.wp)}catch{}}
+  const f=fOf(w);if(w.sec.fp&&f&&f.sec){const k=await fVerify(f,pw);if(k){try{const d=await unwrapDek(k,w.sec.fp);FKEYS[f.id]=k;return d}catch{}}}
+  return null}
+async function unlockFolder(f){if(!f.sec||FKEYS[f.id])return true;let key=null;
+  const r=await dlg({title:`Unlock folder “${f.name}”`,note:'Enter the folder password.',fields:[['p','Password']],ok:'Unlock',check:async v=>{key=await fVerify(f,v.p);return key?null:'That password is not right.'}});
+  if(!r)return false;FKEYS[f.id]=key;side();return true}
+async function unlockWs(w){if(!w.locked)return true;const f=fOf(w);
+  if(w.sec.fp&&f&&FKEYS[f.id]){try{await openWithDek(w,await unwrapDek(FKEYS[f.id],w.sec.fp));sideAfter();return true}catch{}}
+  let dek=null;
+  const r=await dlg({title:`Unlock “${w.name}”`,note:w.sec.fp&&f?`Enter this workspace’s password, or the password of its folder “${f.name}”.`:'Enter the workspace password.',fields:[['p','Password']],ok:'Unlock',
+    check:async v=>{dek=await dekFor(w,v.p);return dek?null:'That password is not right.'}});
+  if(!r)return false;await openWithDek(w,dek);sideAfter();return true}
+async function lockWs(w){if(!w.sec||w.locked)return;
+  if(w===S){let o=ROOT.list.find(x=>x!==w&&!x.locked);if(!o){o={id:uid(),name:'Untitled workspace',created:Date.now(),mod:Date.now(),view:{x:290,y:70,k:1},notes:{},edges:[]};ROOT.list.push(o)}openWs(o.id)}
+  await flushNow();
+  const mids=[...new Set(Object.values(w.notes).flatMap(midsOf))],keep=hdrOut(w);
+  for(const k of Object.keys(w))delete w[k];Object.assign(w,keep,{locked:true,notes:{},edges:[],view:{x:290,y:70,k:1}});
+  delete KEYS[w.id];mids.forEach(m=>{if(OU[m]){OU[m].then(u=>u&&URL.revokeObjectURL(u));delete OU[m]}});
+  sideAfter();await persist()}
+async function lockFolder(f){for(const w of ROOT.list.filter(x=>x.f===f.id&&x.sec&&!x.locked))await lockWs(w);delete FKEYS[f.id];side()}
+async function reFiles(w,mode){const ms=[...new Set(Object.values(w.notes).flatMap(midsOf))];
+  for(const k of ms){const raw=await idbRaw('get',k);if(!raw)continue;const enc=isEnc(new Uint8Array(await raw.slice(0,8).arrayBuffer()));
+    if(mode==='enc'&&!enc)await idbRaw('put',k,await encFile(w.id,raw));
+    if(mode==='dec'&&enc){const p=await decFile(raw);if(p)await idbRaw('put',k,p)}}}
+async function setWsPw(w){
+  if(w.locked&&!(await unlockWs(w)))return;
+  const had=!!(w.sec&&w.sec.wp);
+  const r=await dlg({title:had?`Change password for “${w.name}”`:`Protect “${w.name}” with a password`,
+    note:had?'':'This workspace will be encrypted on this computer. There is no password recovery: if you forget the password, its contents cannot be opened.',
+    fields:[...(had?[['o','Current password']]:[]),['n','New password'],['r','Repeat new password']],opts:[['al','Lock automatically when I leave this workspace',w.sec&&w.sec.al]],ok:had?'Change password':'Set password',
+    check:async v=>{if(had&&!(await pwCheck(w.sec.wp,v.o)))return 'The current password is not right.';return pwOk(v.n)||(v.n!==v.r?'The two new passwords don’t match.':null)}});
+  if(!r)return;
+  const first=!KEYS[w.id],d=KEYS[w.id]||await newDek(),sl=rnd(16),k=await kdf(r.n,sl,ITER),wp={s:b64(sl),i:ITER,...await wrapDek(k,d)};
+  KEYS[w.id]=d;w.sec=w.sec||{};w.sec.wp=wp;w.sec.al=r.al?1:0;      // key material is saved before any file is touched
+  await persist();if(first){toast('Encrypting this workspace’s files…');await reFiles(w,'enc')}
+  side();save();toast(had?'Password changed':'Workspace is now password-protected')}
+async function removeWsPw(w){if(!w.sec||!w.sec.wp)return;if(w.locked&&!(await unlockWs(w)))return;
+  const r=await dlg({title:`Remove password from “${w.name}”`,note:w.sec.fp?'It stays protected by its folder’s password.':'Its contents will be stored unencrypted again.',fields:[['o','Current password']],ok:'Remove password',
+    check:async v=>(await pwCheck(w.sec.wp,v.o))?null:'That password is not right.'});
+  if(!r)return;
+  if(!w.sec.fp){toast('Decrypting this workspace’s files…');await reFiles(w,'dec')}
+  if(w.sec.fp){delete w.sec.wp;delete w.sec.al}else{delete w.sec;delete KEYS[w.id];delete w.rf;delete w.fm;delete w.enc}
+  side();save();toast('Password removed')}
+async function setFolderPw(f){
+  const had=!!f.sec,ws=ROOT.list.filter(w=>w.f===f.id);
+  if(had&&!(await unlockFolder(f)))return;
+  const stuck=ws.find(w=>w.locked&&!(w.sec&&w.sec.fp));if(stuck){toast(`Unlock “${stuck.name}” first so the folder lock can cover it`);return}
+  const r=await dlg({title:had?`Change password for folder “${f.name}”`:`Protect folder “${f.name}”`,note:had?'':'Every workspace in this folder is encrypted. Its password opens all of them. There is no password recovery.',
+    fields:[...(had?[['o','Current password']]:[]),['n','New password'],['r','Repeat new password']],ok:had?'Change password':'Set password',
+    check:async v=>{if(had&&!(await fVerify(f,v.o)))return 'The current password is not right.';return pwOk(v.n)||(v.n!==v.r?'The two new passwords don’t match.':null)}});
+  if(!r)return;
+  const sl=rnd(16),key=await kdf(r.n,sl,ITER),v=await aesE(key,te.encode('tb-folder-ok')),plan=[];
+  for(const w of ws){let dek,fresh=false;
+    if(w.sec&&w.sec.fp)dek=await unwrapDek(FKEYS[f.id],w.sec.fp);else if(KEYS[w.id])dek=KEYS[w.id];else{dek=await newDek();fresh=true}
+    plan.push([w,dek,await wrapDek(key,dek),fresh])}
+  for(const[w,dek,wr]of plan){if(!w.locked)KEYS[w.id]=dek;w.sec=w.sec||{};w.sec.fp=wr;w.sec.ff=f.id}
+  f.sec={s:b64(sl),i:ITER,v};FKEYS[f.id]=key;
+  await persist();for(const[w,,,fresh]of plan)if(fresh)await reFiles(w,'enc');
+  side();save();toast(had?'Folder password changed':'Folder is now password-protected')}
+async function removeFolderPw(f){if(!f.sec||!(await unlockFolder(f)))return;
+  const r=await dlg({title:`Remove password from folder “${f.name}”`,note:'Workspaces inside lose this folder’s protection. Those with their own password keep it; the rest are stored unencrypted again.',fields:[['o','Current password']],ok:'Remove password',
+    check:async v=>(await fVerify(f,v.o))?null:'That password is not right.'});
+  if(!r)return;toast('Decrypting…');
+  for(const w of ROOT.list.filter(x=>x.f===f.id)){
+    if(w.locked&&w.sec&&w.sec.fp)await openWithDek(w,await unwrapDek(FKEYS[f.id],w.sec.fp));
+    if(w.sec&&!w.sec.wp)await reFiles(w,'dec');
+    if(w.sec){delete w.sec.fp;delete w.sec.ff;if(!w.sec.wp){delete w.sec;delete KEYS[w.id];delete w.rf;delete w.fm;delete w.enc}}}
+  delete f.sec;delete FKEYS[f.id];side();save();toast('Folder password removed')}
+async function moveWs(m,fid,quiet){
+  const from=m.f&&ROOT.fo.find(x=>x.id===m.f),to=fid&&ROOT.fo.find(x=>x.id===fid);
+  if((from||null)===(to||null)){m.f=fid||null;return true}
+  if(from&&from.sec&&m.sec&&m.sec.fp){
+    if(!(await unlockFolder(from)))return false;
+    if(!quiet&&!confirm(`“${m.name}” is protected by the folder “${from.name}”. Moving it out removes that protection${m.sec.wp?' (its own password stays)':', so it will no longer be locked'}. Continue?`))return false;
+    if(m.locked)await openWithDek(m,await unwrapDek(FKEYS[from.id],m.sec.fp));
+    if(!m.sec.wp)await reFiles(m,'dec');
+    delete m.sec.fp;delete m.sec.ff;if(!m.sec.wp){delete m.sec;delete KEYS[m.id];delete m.rf;delete m.fm;delete m.enc}}
+  if(to&&to.sec){
+    if(!(await unlockFolder(to)))return false;
+    if(m.locked&&!(await unlockWs(m)))return false;
+    const fresh=!KEYS[m.id],dek=KEYS[m.id]||await newDek(),wr=await wrapDek(FKEYS[to.id],dek);
+    KEYS[m.id]=dek;m.sec=m.sec||{};m.sec.fp=wr;m.sec.ff=to.id;
+    if(fresh){await persist();await reFiles(m,'enc')}}
+  m.f=fid||null;return true}
+const lockBtn=w=>{const b=el$('button','lkb'+(w.locked?'':' op'),{innerHTML:w.locked?IC_C:IC_O,title:w.locked?'Locked — click to unlock':'Unlocked — click to lock again'});
+  b.onclick=async e=>{e.stopPropagation();if(w.locked){if(await unlockWs(w))openWs(w.id)}else lockWs(w)};return b};
+const folLock=f=>{const l=fLocked(f),b=el$('button','lkb'+(l?'':' op'),{innerHTML:l?IC_C:IC_O,title:l?'Locked — click to unlock':'Unlocked — click to lock again'});
+  b.onclick=async e=>{e.stopPropagation();if(l){if(await unlockFolder(f)){f.open=true;save();side()}}else lockFolder(f)};return b};
+$('#side').addEventListener('contextmenu',e=>{const li=e.target.closest('#wl li');if(!li)return;e.preventDefault();e.stopPropagation();
+  if(li.dataset.f){const f=ROOT.fo.find(x=>x.id===li.dataset.f);if(!f)return;
+    return menu(e,[['Rename',()=>renF(li.querySelector('.nm'),f)],'-',...(f.sec?[['Change folder password…',()=>setFolderPw(f)],['Remove folder password…',()=>removeFolderPw(f)],...(FKEYS[f.id]?[['Lock folder now',()=>lockFolder(f)]]:[['Unlock folder…',()=>unlockFolder(f)]])]:[['Set folder password…',()=>setFolderPw(f)]]),'-',['Delete folder',()=>li.querySelector('.wx').click(),1]])}
+  const w=ROOT.list.find(x=>x.id===li.dataset.w);if(!w)return;
+  menu(e,[[w.locked?'Unlock and open…':'Open',()=>openWs(w.id)],['Rename',()=>ren(li.querySelector('.nm'),w)],'-',
+    ...(!w.sec?[['Set password…',()=>setWsPw(w)]]:[...(w.sec.wp?[['Change password…',()=>setWsPw(w)],['Remove password…',()=>removeWsPw(w)]]:[['Add its own password…',()=>setWsPw(w)]]),...(w.locked?[]:[['Lock now',()=>lockWs(w)]])]),
+    '-',['Delete workspace',()=>delWs(w),1]])});
 
 /* graph view */
 let gOpen=false,gn=[],gm={},gE=[],gv={x:0,y:0,k:1},gAlpha=1,gHover=null,gDrag=null,gP=null,gCol={};
@@ -526,19 +751,22 @@ function reconcile(w){const t=Date.now(),base=w.ch?t:(w.created||t);w.ch=w.ch||[
   const cur=curLinks(w),act=new Map(w.ch.filter(r=>!r.d).map(r=>[r.k,r]));
   for(const[k,r]of cur)if(!act.has(k))w.ch.push({k,...r,c:base,d:0});
   for(const[k,r]of act)if(!cur.has(k))r.d=t}
+function gLocked(w,all){const L=ROOT.list.length,ang=ROOT.list.indexOf(w)/L*6.283;
+  all.push({n:{id:'lk:'+w.id,title:'🔒 '+w.name,body:'',x:0,y:0,w:0,c:0,locked:1},w,t:w.created||0,x:Math.cos(ang)*320+Math.random(),y:Math.sin(ang)*320+Math.random()})}
 function gInit(){const cs=getComputedStyle(document.documentElement),v=k=>cs.getPropertyValue(k).trim();
   gCol={line:v('--line'),ink:v('--ink'),mute:v('--mute'),del:'#d0453c',c:[0,1,2,3,4,5].map(i=>i?v('--c'+i):v('--line'))};
   const G=ROOT.g,ws=G.all?ROOT.list.filter(w=>!G.off[w.id]):[S],all=[],R=[],showDel=G.del!==0;gMax=Date.now();gMin=gMax;
-  for(const w of ws){reconcile(w);const W=Object.values(w.notes),A=W.filter(n=>G.files||!n.mid);
+  for(const w of ws){if(w.locked){gLocked(w,all);continue}reconcile(w);const W=Object.values(w.notes),A=W.filter(n=>G.files||!n.mid);
     let mx=0,my=0;A.forEach(n=>{mx+=n.x+n.w/2;my+=n.y+60});mx/=A.length||1;my/=A.length||1;
     const L=ROOT.list.length,ang=ROOT.list.indexOf(w)/L*6.283,ox=G.all&&L>1?Math.cos(ang)*320:0,oy=G.all&&L>1?Math.sin(ang)*320:0,live=new Set(W.map(n=>n.id));
     if(showDel)for(const r of w.ch)for(const id of[r.a,r.b])if(!live.has(id)&&w.tt[id]){live.add(id);A.push({id,title:w.tt[id],body:'',x:mx,y:my,w:0,c:0,ghost:1})}
     for(const n of A){const t=w.ns[n.id]||w.created||0;gMin=Math.min(gMin,t);all.push({n,w,t,x:(n.x+n.w/2-mx)*.5+ox+Math.random(),y:(n.y+60-my)*.5+oy+Math.random()})}
     for(const r of w.ch)if(showDel||!r.d){gMin=Math.min(gMin,r.c);R.push(r)}}
   const dg={};R.forEach(r=>{if(!r.d){dg[r.a]=(dg[r.a]||0)+1;dg[r.b]=(dg[r.b]||0)+1}});
+  for(const w of ws)if(w.locked&&w.rf)for(const id of Object.values(w.rf.h))if(dg[id])dg['lk:'+w.id]=(dg['lk:'+w.id]||0)+dg[id];
   gn=all.filter(o=>!G.orph||dg[o.n.id]).map(o=>{const id=o.n.id,p=GP[id]||(GP[id]={x:o.x,y:o.y,vx:0,vy:0});
     return Object.assign(p,{id,w:o.w,n:o.n,t:o.t,d:dg[id]||0,r:5+Math.sqrt(dg[id]||0)*3.2,col:G.all?WC(o.w):gCol.line})});
-  gm=Object.fromEntries(gn.map(o=>[o.id,o]));gE=R.filter(r=>gm[r.a]&&gm[r.b]).map(r=>[r.a,r.b,r.m,r]);
+  gm=Object.fromEntries(gn.map(o=>[o.id,o]));for(const w of ws)if(w.locked&&w.rf&&gm['lk:'+w.id])for(const id of Object.values(w.rf.h))gm[id]=gm['lk:'+w.id];gE=R.filter(r=>gm[r.a]&&gm[r.b]).map(r=>[r.a,r.b,r.m,r]);
   if(gMax-gMin<2000)gMin=gMax-2000;gAlpha=1;gHover=null;gHE=null;gMatch();gUI();gTL()}
 const gNV=o=>gT===null||o.t<=gT,gEV=r=>gT===null||r.c<=gT,gDL=r=>r.d&&(gT===null||r.d<=gT);
 function gTL(){const T=gT===null?Date.now():gT;$('#gsl').value=gT===null?1000:Math.round((gT-gMin)/Math.max(1,gMax-gMin)*1000);
@@ -596,7 +824,7 @@ function gDraw(){const d=devicePixelRatio||1,x=gX,k=gv.k;x.setTransform(1,0,0,1,
     x.lineWidth=(fresh||r===gHE?2.8:1.2)/k;x.setLineDash(del?[2/k,5/k]:m===1?[5/k,4/k]:m===2?[1/k,4/k]:[]);
     x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}
   for(const o of gn){if(!gNV(o))continue;x.globalAlpha=dim(o.id)?.15:o.n.ghost?.3:(o.d?1:.65);const c=o.n.c;x.fillStyle=typeof c==='string'?c:c?gCol.c[c]:o.col;
-    x.strokeStyle=o.col;x.lineWidth=(o===gHover||(gMs&&gMs.has(o.id))?2.8:1.5)/k;x.setLineDash(o.n.ghost?[3/k,3/k]:[]);x.beginPath();
+    x.strokeStyle=o.col;x.lineWidth=(o===gHover||(gMs&&gMs.has(o.id))?2.8:1.5)/k;x.setLineDash(o.n.ghost||o.n.locked?[3/k,3/k]:[]);x.beginPath();
     o.n.mid?x.rect(o.x-o.r,o.y-o.r,o.r*2,o.r*2):x.arc(o.x,o.y,o.r,0,7);x.fill();x.stroke()}
   x.setLineDash([]);x.textAlign='center';x.fillStyle=gCol.ink;x.font=`${12/k}px -apple-system,system-ui,sans-serif`;
   for(const o of gn){if(!gNV(o))continue;const on=lit&&lit.has(o.id);if(k<.5&&!on)continue;x.globalAlpha=dim(o.id)?.12:o.n.ghost?.4:.95;
@@ -614,7 +842,8 @@ gC.addEventListener('pointermove',e=>{
   gP.m=Math.max(gP.m,Math.hypot(e.clientX-gP.x,e.clientY-gP.y));
   if(gP.o){const p=gw(e);gP.o.x=p.x;gP.o.y=p.y;gP.o.vx=gP.o.vy=0;gHover=gP.o;gAlpha=Math.max(gAlpha,.3)}
   else{gv.x=gP.vx+e.clientX-gP.x;gv.y=gP.vy+e.clientY-gP.y}});
-gC.addEventListener('pointerup',()=>{const p=gP;gP=null;gDrag=null;gC.style.cursor='grab';if(p&&p.o&&p.m<4&&!p.o.n.ghost){const o=p.o;closeGraph();if(o.w!==S)openWs(o.w.id);goTo(o.id)}});
+gC.addEventListener('pointerup',()=>{const p=gP;gP=null;gDrag=null;gC.style.cursor='grab';if(p&&p.o&&p.m<4&&p.o.n.locked){const w=p.o.w;closeGraph();unlockWs(w).then(ok=>ok&&openWs(w.id));return}
+  if(p&&p.o&&p.m<4&&!p.o.n.ghost){const o=p.o;closeGraph();if(o.w!==S)openWs(o.w.id);goTo(o.id)}});
 gC.addEventListener('wheel',e=>{e.preventDefault();const k=Math.min(4,Math.max(.1,gv.k*Math.exp(-e.deltaY*(e.ctrlKey?.01:.0015)))),r=k/gv.k;
   gv.x=e.clientX-(e.clientX-gv.x)*r;gv.y=e.clientY-(e.clientY-gv.y)*r;gv.k=k},{passive:false});
 addEventListener('resize',()=>{if(gOpen)gSize()});
@@ -628,15 +857,17 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&gOpen){closeGraph();return}
 const MN=/@\[([^\[\]]+?)\]/g;let MI={},mp=null;
 const mpEl=el$('div');mpEl.id='mp';document.body.append(mpEl);
 function resolveMn(t,cur=S){const lc=z=>z.trim().toLowerCase(),f=(w,tt)=>Object.values(w.notes).find(n=>lc(n.title)===lc(tt)),i=t.indexOf('/');let n;
-  if(i>0){const w=ROOT.list.find(x=>lc(x.name)===lc(t.slice(0,i)));if(w&&(n=f(w,t.slice(i+1))))return{n,w}}
+  if(i>0){const w=ROOT.list.find(x=>lc(x.name)===lc(t.slice(0,i)));if(w){if(n=f(w,t.slice(i+1)))return{n,w};if(n=rfFind(w,t.slice(i+1)))return{n,w}}}
   if(n=f(cur,t))return{n,w:cur};
-  for(const w of ROOT.list)if(w!==cur&&(n=f(w,t)))return{n,w};return null}
+  for(const w of ROOT.list)if(w!==cur){if(n=f(w,t))return{n,w};if(n=rfFind(w,t))return{n,w}}return null}
+/* a locked workspace keeps only salted hashes of its note titles: a typed @reference can still find its target without the title or content being readable */
+function rfFind(w,t){if(!w.locked||!w.rf||!t.trim())return null;const id=w.rf.h[rfHash(w.rf.s,t)];return id?{id,title:t.trim(),body:'',locked:1}:null}
 function mBuild(){MI={};for(const w of ROOT.list)for(const x of Object.values(w.notes))for(const t of new Set([...x.body.matchAll(MN)].map(m=>m[1]))){
   const r=resolveMn(t,w);if(r&&r.n!==x)(MI[r.n.id]=MI[r.n.id]||[]).push({x,w})}}
 function mIn(n,bl){const l=MI[n.id];if(!l)return;bl.append(el$('em','',{textContent:'Mentioned in'}));
   for(const{x,w}of l){const c=el$('span',w===S?'':'ex',{textContent:(w===S?'':w.name+' · ')+(x.title||'Untitled')});
     c.style.setProperty('--wc',WC(w));c.onclick=()=>jumpTo(w.id,x.id);bl.append(c)}}
-function jumpTo(wid,id){if(wid!==S.id)openWs(wid);goTo(id)}
+async function jumpTo(wid,id){const w=ROOT.list.find(x=>x.id===wid);if(w&&w.locked&&!(await unlockWs(w)))return;if(wid!==S.id)openWs(wid);if(N[id])goTo(id)}
 function renMn(o,nt){const lo=o.toLowerCase();for(const w of ROOT.list)for(const y of Object.values(w.notes))y.body=y.body.replace(MN,(s,t)=>{
   const i=t.indexOf('/');if(i>0&&t.slice(0,i).trim().toLowerCase()===S.name.toLowerCase()&&t.slice(i+1).trim().toLowerCase()===lo)return`@[${S.name}/${nt}]`;
   if(w===S&&t.trim().toLowerCase()===lo)return`@[${nt}]`;return s})}
@@ -730,10 +961,11 @@ function summary(w){const W=Object.values(w.notes);if(!W.length)return['This wor
   if(iso.length)o.push(`${iso.length} note${iso.length>1?'s are':' is'} not connected yet: ${iso.slice(0,4).map(n=>'“'+(n.title||'Untitled')+'”').join(', ')}${iso.length>4?'…':''}.`);
   const cur=SS&&SS.w===w?diffLines(SS.snap,mkSnap(w)):[];if(cur.length)o.push('This session so far: '+cur.join('. ')+'.');
   return o}
-function openOv(){ovOpen=true;show($('#ov'),'flex');setRW();ovRender()}
-function closeOv(){ovOpen=false;fade($('#ov'));setRW()}
-const RW=()=>ovOpen?(ROOT.ovw||420):0;
-function setRW(){document.documentElement.style.setProperty('--rw',RW()+'px');$('#ov').style.width=(ROOT.ovw||420)+'px';if(gOpen){gSize();setTimeout(gSize,260)}}
+function openOv(){if(aiOpen)closeAi(1);ovOpen=true;show($('#ov'),'flex');setRW();ovRender()}
+function closeOv(q){ovOpen=false;fade($('#ov'));if(!q)setRW()}
+let aiOpen=false;
+const RW=()=>ovOpen||aiOpen?(ROOT.ovw||420):0;
+function setRW(){document.documentElement.style.setProperty('--rw',RW()+'px');$('#ov').style.width=$('#ai').style.width=(ROOT.ovw||420)+'px';if(gOpen){gSize();setTimeout(gSize,260)}}
 $('#ovr').onpointerdown=e=>{e.preventDefault();const h=e.currentTarget;h.setPointerCapture(e.pointerId);document.body.classList.add('rs');
   const mv=ev=>{ROOT.ovw=Math.round(Math.min(innerWidth-360,Math.max(280,innerWidth-ev.clientX)));setRW()};
   const up=()=>{h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);document.body.classList.remove('rs');save()};
@@ -751,8 +983,107 @@ function ovRender(){const w=S,B=$('#ovb');$('#ovt').textContent=w.name;$('#ovd')
 $('#ovs').onclick=e=>{const t=e.target.dataset.t;if(t){ovTab=t;ovRender()}};
 $('#ov').addEventListener('pointerdown',e=>{if(e.target.id==='ov')closeOv()});
 $('#hb').onclick=()=>ovOpen?closeOv():openOv();
-addEventListener('keydown',e=>{if(e.key==='Escape'&&ovOpen)closeOv()});
-addEventListener('beforeunload',()=>{endSession();try{storeSync(JSON.stringify(ROOT))}catch(e){}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&ovOpen)closeOv();if(e.key==='Escape'&&aiOpen&&!e.target.closest('#ai'))closeAi()});
+addEventListener('beforeunload',()=>{endSession();try{storeSync(serializeSync())}catch(e){}});
+if(window.tb&&tb.onClose)tb.onClose(async()=>{try{endSession();await flushNow()}catch(e){}tb.closed()});
+
+/* ---- optional local AI assistant: a free open-weight model running on this computer (Ollama or any OpenAI-compatible local server) ---- */
+ROOT.ai=ROOT.ai||{prov:'ollama',url:'http://localhost:11434',model:'',ctx:8192,scope:'cur'};
+const AIK={ollama:{url:'http://localhost:11434',name:'Ollama'},openai:{url:'http://localhost:1234/v1',name:'OpenAI-compatible local server (LM Studio, llama.cpp…)'}};
+let aiCtl=null,aiMap=[],aiModels=null,aiStat='',aiRes='',aiBusy=false;
+async function aiNet(path,body){const a=ROOT.ai,url=a.url.replace(/\/+$/,'')+path,ctl=aiCtl||{id:uid(),ac:new AbortController()};
+  if(window.tb&&tb.net){const r=await tb.net({url,method:body?'POST':'GET',body:body?JSON.stringify(body):null,id:ctl.id});if(r.error)throw new Error(r.error);if(r.status>=400)throw new Error('The model server answered '+r.status+': '+String(r.body).slice(0,200));return JSON.parse(r.body)}
+  const h=new URL(url).hostname;if(!['localhost','127.0.0.1','[::1]'].includes(h))throw new Error('Only a server on this computer (localhost) is allowed.');
+  const r=await fetch(url,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:ctl.ac.signal});
+  if(!r.ok)throw new Error('The model server answered '+r.status+': '+(await r.text()).slice(0,200));return r.json()}
+async function aiModelsList(){const a=ROOT.ai;if(a.prov==='ollama'){const r=await aiNet('/api/tags');return(r.models||[]).map(m=>m.name)}const r=await aiNet('/models');return(r.data||[]).map(m=>m.id)}
+async function llm(sys,usr,json){const a=ROOT.ai,msgs=[{role:'system',content:sys},{role:'user',content:usr}];
+  if(a.prov==='ollama'){const r=await aiNet('/api/chat',{model:a.model,stream:false,format:json?'json':undefined,options:{num_ctx:a.ctx,temperature:.3},messages:msgs});return(r.message||{}).content||''}
+  const r=await aiNet('/chat/completions',{model:a.model,temperature:.3,stream:false,messages:msgs});return(((r.choices||[])[0]||{}).message||{}).content||''}
+const aiClean=t=>(t||'').replace(/<think>[\s\S]*?<\/think>/g,'').trim();
+function aiParse(t){t=aiClean(t);const tryJ=x=>{try{const o=JSON.parse(x);return o&&typeof o==='object'?o:null}catch{return null}};
+  let o=tryJ(t);if(!o){const m=t.match(/\{[\s\S]*\}/);if(m)o=tryJ(m[0])}return o}
+/* what the model may read: unlocked workspaces only. Locked workspaces hold no content in memory, so they cannot leak into a prompt. */
+function aiDigest(scope,budget,focusId){const ws=scope==='all'?ROOT.list.filter(w=>!w.locked):[S],lines=[];aiMap=[];
+  const all=[];for(const w of ws)for(const n of Object.values(w.notes))all.push({w,n});
+  const per=Math.max(220,Math.floor(budget/Math.max(1,all.length))),sorted=all.sort((a,b)=>(b.n.id===focusId)-(a.n.id===focusId));let used=0,inc=0;
+  for(const{w,n}of sorted){const body=(n.mid&&!n.body?`[attached file: ${n.fn||'file'}]`:n.body||'').replace(/\s+\n/g,'\n').trim(),cap=n.id===focusId?Math.min(6000,budget/2):per,
+      t=body.length>cap?body.slice(0,cap)+' …[cut]':body,line=`[#${aiMap.length+1}] "${n.title||'Untitled'}"${scope==='all'?` (workspace: ${w.name})`:''}: ${t}`;
+    if(used+line.length>budget)continue;used+=line.length;inc++;aiMap.push({w,n});lines.push(line)}
+  const conn=[];for(const w of ws)for(const e of w.edges||[]){const a=aiMap.findIndex(x=>x.n.id===e.a)+1,b=aiMap.findIndex(x=>x.n.id===e.b)+1;if(a&&b)conn.push(`[#${a}] — [#${b}]`)}
+  return{text:lines.join('\n\n')+(conn.length?'\n\nManual connections: '+conn.join('; '):''),inc,total:all.length}}
+const AIT={
+  themes:['Main themes','Identify the main themes and how the notes cluster into groups. One item per theme (kind "insight").'],
+  unrel:['Unlinked connections','Find pairs of notes that are NOT currently linked but have a meaningful relationship. One item per pair (kind "connection") with exactly two sources and a short reason.'],
+  contra:['Contradictions','Find statements in different notes that conflict or are in tension (kind "contradiction"), citing both notes.'],
+  dirs:['Research directions','Suggest what to research or read next, based on gaps in the notes. These go beyond the notes, so use basis "model" (kind "direction").'],
+  crit:['Critique a note','Critique the focus note: weak or unsupported claims, gaps, unclear parts, and concrete improvements (kind "improvement").'],
+  qs:['Unanswered questions','List important questions the notes raise but do not answer (kind "question").'],
+  mix:['Combine ideas','Propose new ideas that come from combining two or more notes (kind "insight"), citing each source.']};
+const AISYS=`You are a careful research assistant inside a personal notes app. The user's material is ONLY the NOTES block. Cite notes by number like [#3].
+Reply with JSON only, no other text: {"summary": string, "items": [{"title": string, "detail": string, "kind": "insight"|"connection"|"question"|"contradiction"|"direction"|"improvement", "sources": [note numbers], "basis": "notes"|"model"}]}.
+basis "notes" means directly supported by the cited notes. basis "model" means background knowledge YOU add that is not in the notes and may be wrong; keep it clearly separate and never present it as coming from the notes. A "connection" has exactly two sources. Give at most 8 items.`;
+async function aiRun(kind,question){if(aiBusy)return;const a=ROOT.ai;
+  if(!a.model){aiStat='Choose a model first (open “Connection & model”).';aiPaint();return}
+  const focus=($('#aif')||{}).value||'',budget=Math.max(1500,Math.floor((a.ctx-1700)*3)),d=aiDigest(a.scope,budget,focus);
+  if(!d.inc){aiStat='There are no notes to read yet.';aiPaint();return}
+  if(kind==='crit'&&!focus){aiStat='Pick a note under “Focus note” to critique.';aiPaint();return}
+  const task=kind==='ask'?`Answer the user's question using the notes. If the notes do not contain the answer, say so in the summary. You may add items with basis "model" for useful outside knowledge.\nQUESTION: ${question}`:AIT[kind][1],
+    fn=focus&&aiMap.find(x=>x.n.id===focus),usr=`NOTES (${d.inc} of ${d.total} included):\n${d.text}\n\n${fn?`FOCUS NOTE: [#${aiMap.indexOf(fn)+1}]\n\n`:''}TASK: ${task}`;
+  aiBusy=true;aiCtl={id:uid(),ac:new AbortController()};aiStat=`Thinking on this computer… (${d.inc} of ${d.total} notes read${d.inc<d.total?' — the rest did not fit the context window':''}). Larger models take longer.`;aiRes='';aiPaint();
+  try{const out=await llm(AISYS,usr,true),o=aiParse(out);aiRes=o?o:{summary:aiClean(out),items:[]};aiStat=`Done · ${d.inc} of ${d.total} notes read${d.inc<d.total?' (raise the context window to include more)':''}. These are suggestions; nothing changes until you accept one.`}
+  catch(e){aiRes='';aiStat='';const m=String(e.message||e);aiErr=/abort/i.test(m)?'Cancelled.':m.includes('fetch')||m.includes('ECONN')||m.includes('Failed')?'Could not reach the model server. Is it running? '+m:m}
+  aiBusy=false;aiCtl=null;aiPaint()}
+let aiErr='';
+const aiOf=i=>aiMap[i-1];
+function aiNew(title,body,x,y){const n=newNote(x,y,false,title);n.body=body;els[n.id].querySelector('.ed').value=body;
+  const b=boxOf(n),occ=Object.values(N).filter(o=>o!==n).map(boxOf),sp=spiral((dx,dy)=>!occ.some(o=>OV({...b,x:b.x+dx,y:b.y+dy},o)),50)||[0,0];n.x+=sp[0];n.y+=sp[1];place(n);refresh();drawLinks();save();return n}
+const refOf=({w,n})=>w===S?`[[${n.title}]]`:`@[${w.name}/${n.title}]`;
+function aiCard(it){const src=(it.sources||[]).map(Number).filter(i=>aiOf(i)),grounded=it.basis==='notes'&&src.length>0,c=el$('div','acd'+(grounded?'':' m'));
+  c.innerHTML=`<span class="tg ${grounded?'n':'m'}">${grounded?'From your notes':'New information · from the model, unverified'}</span><h5>${esc(String(it.title||'Suggestion'))}</h5><p>${esc(String(it.detail||''))}</p>`;
+  if(src.length){const sr=el$('div','sr');for(const i of src){const o=aiOf(i),b=el$('span','',{textContent:(o.w===S?'':o.w.name+' · ')+(o.n.title||'Untitled'),title:'Open this note'});b.onclick=()=>jumpTo(o.w.id,o.n.id);sr.append(b)}c.append(sr)}
+  const bt=el$('div','bt'),mk=(t,f)=>{const b=el$('button','',{textContent:t});b.onclick=f;bt.append(b);return b};
+  mk('Create note',()=>{const p=toWorld(innerWidth/2,innerHeight/2),body=(grounded?'':'(AI suggestion — unverified, not from your notes)\n\n')+String(it.detail||'')+(src.length?'\n\nSources: '+src.map(i=>refOf(aiOf(i))).join(' '):'');
+    aiNew(String(it.title||'AI suggestion').slice(0,80),body,p.x-130,p.y-60);c.remove();toast('Note created')});
+  if(it.kind==='connection'&&src.length===2){const[a,b]=src.map(aiOf);
+    mk('Connect these notes',()=>{if(a.w===S&&b.w===S){(S.edges=S.edges||[]).push({id:uid(),a:a.n.id,b:b.n.id});drawLinks();save();toast('Connected')}
+      else{const m=a.w===S?a:b.w===S?b:null,o=m===a?b:a;if(!m){toast('Open one of the two workspaces first');return}m.n.body+=`\n${refOf(o)}`;els[m.n.id].querySelector('.ed').value=m.n.body;refresh();save();toast('Added an @reference')}c.remove()})}
+  mk('Dismiss',()=>c.remove());c.append(bt);return c}
+function aiPaint(){const B=$('#aib');if(!B)return;const a=ROOT.ai,locked=ROOT.list.filter(w=>w.locked).length,conn=aiModels!==null,keep=B.querySelector('details'),open=keep?keep.open:!conn;
+  B.innerHTML='';const top=el$('div');
+  top.innerHTML=`<details ${open?'open':''}><summary>Connection &amp; model ${conn?'· connected':'· not connected'}</summary>
+    <div class="fr">Server type<select id="aip">${Object.entries(AIK).map(([k,v])=>`<option value="${k}" ${a.prov===k?'selected':''}>${esc(v.name)}</option>`).join('')}</select></div>
+    <div class="fr">Address (must be on this computer)<input type="text" id="aiu" value="${esc(a.url)}" spellcheck="false"></div>
+    <div class="fr"><button id="aic">Check connection</button></div>
+    ${conn?`<div class="fr">Model<select id="aim">${aiModels.length?aiModels.map(m=>`<option ${m===a.model?'selected':''}>${esc(m)}</option>`).join(''):'<option value="">No models installed</option>'}</select></div>
+    <div class="fr">Context window (how much the model can read at once)<select id="aix">${[4096,8192,16384,32768].map(v=>`<option value="${v}" ${a.ctx===v?'selected':''}>${v.toLocaleString()} tokens${v===8192?' (default)':''}</option>`).join('')}</select><span>Bigger lets it read more notes but uses more memory and is slower. Some models support less.</span></div>`:''}
+  </details>`;B.append(top);
+  if(!conn){const h=el$('div','ast');h.innerHTML=`<b>Optional — Threadboard works fully without this.</b><br>The assistant runs a free, open-source model on your own computer. No account, no subscription, nothing is sent over the internet.<br><br>
+    <b>To set it up:</b> 1) Install <b>Ollama</b> (ollama.com) and open it. 2) In Terminal run <code>ollama pull llama3.2</code> (about 2 GB) — or <code>ollama pull qwen2.5:7b</code> (about 4.7 GB, smarter). 3) Press “Check connection” above. LM Studio or llama.cpp also work: choose “OpenAI-compatible”.<br><br>
+    <b>Hardware, honestly:</b> small models (3B) need about 4 GB of free memory; 7–8B models about 8 GB (comfortable on 16 GB); 14B and up want 16–32 GB. It’s free to use, but speed, answer quality and how many notes it can read at once are limited by your Mac, the model, and its context window. Small models make mistakes — treat results as suggestions to check.`;B.append(h)}
+  if(aiErr){B.append(el$('div','ast er',{textContent:aiErr}))}
+  if(conn){const q=el$('div');q.innerHTML=`<div class="fr" style="margin-bottom:8px">Read<select id="ais2"><option value="cur" ${a.scope==='cur'?'selected':''}>This workspace</option><option value="all" ${a.scope==='all'?'selected':''}>All unlocked workspaces</option></select></div>
+    <div class="fr" style="margin-bottom:8px">Focus note (for “Critique a note”)<select id="aif"><option value="">Whole selection</option>${Object.values(S.notes).filter(n=>!n.mid).map(n=>`<option value="${n.id}">${esc(n.title||'Untitled')}</option>`).join('')}</select></div>
+    <div class="atk">${Object.entries(AIT).map(([k,v])=>`<button data-k="${k}" ${aiBusy?'disabled':''}>${v[0]}</button>`).join('')}</div>
+    <div class="aq" style="margin-top:8px"><input type="text" id="aiq" placeholder="Ask a question about your notes…" ${aiBusy?'disabled':''}><button id="aia" ${aiBusy?'disabled':''}>Ask</button></div>`;B.append(q)}
+  if(aiStat){const s=el$('div','ast',{textContent:aiStat});if(aiBusy){const c=el$('button','',{textContent:'Cancel'});c.style.marginLeft='8px';c.onclick=()=>{aiCtl&&aiCtl.ac.abort();window.tb&&tb.netCancel&&aiCtl&&tb.netCancel(aiCtl.id)};s.append(c)}B.append(s)}
+  if(aiRes){if(aiRes.summary)B.append(el$('p','',{textContent:String(aiRes.summary)}));for(const it of(aiRes.items||[]).slice(0,12))B.append(aiCard(it))}
+  if(locked)B.append(el$('div','nt',{textContent:`${locked} locked workspace${locked>1?'s are':' is'} never read by the assistant. Unlock one to include it.`}));
+  const g=n=>B.querySelector(n);
+  g('#aip').onchange=e=>{a.prov=e.target.value;a.url=AIK[a.prov].url;a.model='';aiModels=null;aiErr='';save();aiPaint()};
+  g('#aiu').onchange=e=>{a.url=e.target.value.trim();save()};
+  g('#aiu').onkeydown=e=>e.stopPropagation();
+  g('#aic').onclick=async()=>{a.url=g('#aiu').value.trim();aiErr='';aiStat='Checking…';aiPaint();try{aiModels=await aiModelsList();if(!aiModels.includes(a.model))a.model=aiModels[0]||'';aiStat=aiModels.length?'':'Connected, but no models are installed yet. Run “ollama pull llama3.2” in Terminal, then check again.';save()}catch(e){aiModels=null;aiStat='';aiErr='Could not reach a model server at that address. Is Ollama (or your server) running? '+(e.message||'')}aiPaint()};
+  if(conn){g('#aim').onchange=e=>{a.model=e.target.value;save()};g('#aix').onchange=e=>{a.ctx=+e.target.value;save()};g('#ais2').onchange=e=>{a.scope=e.target.value;save()};
+    B.querySelectorAll('.atk button').forEach(b=>b.onclick=()=>{aiErr='';aiRun(b.dataset.k)});
+    const ask=()=>{const t=g('#aiq').value.trim();if(t){aiErr='';aiRun('ask',t)}};g('#aia').onclick=ask;g('#aiq').onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')ask()}}}
+function openAi(){if(ovOpen)closeOv(1);aiOpen=true;show($('#ai'),'flex');setRW();aiPaint()}
+function closeAi(q){aiOpen=false;fade($('#ai'));if(!q)setRW()}
+$('#ab').onclick=()=>aiOpen?closeAi():openAi();
+$('#air').onpointerdown=e=>{e.preventDefault();const h=e.currentTarget;h.setPointerCapture(e.pointerId);document.body.classList.add('rs');
+  const mv=ev=>{ROOT.ovw=Math.round(Math.min(innerWidth-360,Math.max(280,innerWidth-ev.clientX)));setRW()};
+  const up=()=>{h.removeEventListener('pointermove',mv);h.removeEventListener('pointerup',up);document.body.classList.remove('rs');save()};
+  h.addEventListener('pointermove',mv);h.addEventListener('pointerup',up)};
 
 /* coded YouTube embed (official IFrame Player API; plays inside the note, no audio extraction) */
 let ytP=null;const mmss=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
@@ -1037,8 +1368,8 @@ function refresh(){
   mBuild();const inc={};for(const n of Object.values(N))for(const t of new Set(linksOf(n))){const g=byTitle(t);if(g&&g!==n)(inc[g.id]=inc[g.id]||[]).push(n)}
   for(const n of Object.values(N)){const el=els[n.id];
     el.querySelector('.b').innerHTML=esc(n.body).replace(LU,(s,t,u,mn)=>{
-      if(mn){const r=resolveMn(mn);if(!r)return `<span class="mn x">${mn}</span>`;const x=r.w!==S;
-        return `<span class="mn${x?' ex':''}" style="--wc:${WC(r.w)}" data-w="${r.w.id}" data-n="${r.n.id}" title="${x?'In another workspace':'In this workspace'}">${x?`<small>${esc(r.w.name)}</small>`:''}${esc(r.n.title||'Untitled')}</span>`}
+      if(mn){const r=resolveMn(mn);if(!r)return `<span class="mn x">${mn}</span>`;const x=r.w!==S,lk=r.n.locked;
+        return `<span class="mn${x?' ex':''}" style="--wc:${WC(r.w)}" data-w="${r.w.id}" data-n="${r.n.id}" title="${lk?'In a locked workspace — password required to open':x?'In another workspace':'In this workspace'}">${x?`<small>${esc(r.w.name)}</small>`:''}${esc(r.n.title||'Untitled')}${lk?`<i class="li">${IC_C}</i>`:''}</span>`}
       if(u){const m=u.match(/^(.*?)([.,;:!?]*)$/);return `<a class="lk" href="${m[1]}" target="_blank" rel="noopener">${m[1]}</a>${m[2]}`}
       const g=byTitle(t);return `<span class="lk ${g&&(g.body||g.mid)?'':'new'}" data-t="${t.trim()}">${t}</span>`});
     const gc=galList(n).length,us=urlsOf(n.body).filter(u=>!(gc>=2&&IMG.test(u))),pk=us.join('\n'),pv=el.querySelector('.pvs');renderGal(n);
@@ -1097,9 +1428,9 @@ addEventListener('keydown',e=>{
 $('#bNew').onclick=()=>{const p=toWorld(innerWidth/2,innerHeight/2);newNote(p.x-130,p.y-60,true)};
 $('#bFind').onclick=openFind;$('#bFit').onclick=fit;
 $('#bIn').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1.2);$('#bOut').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1/1.2);
-$('#bExp').onclick=async()=>{const m={};for(const w of ROOT.list)for(const n of Object.values(w.notes))for(const k of midsOf(n)){const f=await idb('get',k);if(f)m[k]=await du(f)}const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify({...ROOT,media:m},null,1)],{type:'application/json'}));
-  a.download='threadboard-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Backup downloaded')};
+$('#bExp').onclick=async()=>{const m={};for(const w of ROOT.list){const ks=w.locked?(w.fm||[]):[...new Set(Object.values(w.notes).flatMap(midsOf))];for(const k of ks){const f=w.sec?await idbRaw('get',k):await idb('get',k);if(f)m[k]=await du(f)}}const j=JSON.parse(await serialize()),a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify({...j,media:m},null,1)],{type:'application/json'}));
+  a.download='threadboard-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast(ROOT.list.some(w=>w.sec)?'Backup downloaded · protected workspaces stay encrypted in it':'Backup downloaded')};
 $('#bImp').onclick=()=>$('#file').click();
 $('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
   r.onload=async()=>{try{const d=JSON.parse(r.result);if(!d.notes&&!d.list)throw 0;

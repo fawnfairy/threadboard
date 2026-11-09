@@ -6,5 +6,9 @@ contextBridge.exposeInMainWorld('tb', {
   filePut: (id, meta, buf) => ipc.invoke('tb:filePut', id, meta, buf),
   fileGet: id => ipc.invoke('tb:fileGet', id),
   lib: n => ipc.invoke('tb:lib', n),
-  fileDel: id => ipc.invoke('tb:fileDel', id)
+  fileDel: id => ipc.invoke('tb:fileDel', id),
+  net: o => ipc.invoke('tb:net', o),
+  netCancel: id => ipc.send('tb:netCancel', id),
+  onClose: cb => ipc.on('tb:flush', () => cb()),
+  closed: () => ipc.send('tb:flushed')
 });
