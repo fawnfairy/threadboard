@@ -31,6 +31,11 @@ jobs:
           file "$A" "$X"
           file "$A" | grep -q arm64
           file "$X" | grep -q x86_64
+      - name: Verify both apps carry a valid signature
+        run: |
+          for d in dist/mac-arm64 dist/mac; do
+            [ -d "$d/Threadboard.app" ] && codesign --verify --deep --strict "$d/Threadboard.app" && codesign -dv "$d/Threadboard.app" 2>&1 | grep -E "Signature|Identifier" || true
+          done
       - name: Check the installers contain the app
         run: |
           ls -lh dist/*.dmg

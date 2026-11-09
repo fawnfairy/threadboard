@@ -59,7 +59,8 @@
           "path": "/Applications"
         }
       ]
-    }
+    },
+    "afterPack": "./afterPack.js"
   },
   "author": "Threadboard"
 }
