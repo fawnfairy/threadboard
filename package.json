@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "dist": "electron-builder --mac"
+    "dist": "electron-builder --mac --arm64 && electron-builder --mac --x64"
   },
   "dependencies": {
     "better-sqlite3": "^11.5.0",
