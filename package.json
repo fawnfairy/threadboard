@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "dist": "electron-builder --mac --arm64 && electron-builder --mac --x64"
+    "dist": "electron-builder --mac --arm64 --publish never && electron-builder --mac --x64 --publish never"
   },
   "dependencies": {
     "better-sqlite3": "^11.5.0",
@@ -33,13 +33,7 @@
       "category": "public.app-category.productivity",
       "icon": "build/icon.icns",
       "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        }
+        "dmg"
       ],
       "identity": null,
       "hardenedRuntime": false
