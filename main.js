@@ -5,6 +5,7 @@ if (process.env.THREADBOARD_DATA_DIR) app.setPath('userData', process.env.THREAD
 const dataDir = path.join(app.getPath('userData'), 'data'), filesDir = path.join(dataDir, 'files');
 const dbPath = path.join(dataDir, 'threadboard.db'), cfgPath = path.join(dataDir, 'settings.json');
 fs.mkdirSync(filesDir, { recursive: true, mode: 0o700 });
+process.on('unhandledRejection', e => { console.error('Unhandled rejection', e); if (process.argv.includes('--smoke-test')) app.exit(1); });
 let db, win, dirty = false; const last = new Map();
 const cfg = () => { try { return JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch { return {}; } };
 const bdir = () => cfg().backupDir || path.join(dataDir, 'backups');

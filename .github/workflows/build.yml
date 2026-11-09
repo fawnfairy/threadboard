@@ -16,8 +16,21 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
-      - name: Build the .app and .dmg installers (Apple Silicon + Intel)
-        run: npm run dist
+      - name: Build the Apple Silicon app and installer
+        run: |
+          rm -rf node_modules/better-sqlite3/build
+          npx electron-builder --mac --arm64 --publish never
+      - name: Build the Intel app and installer
+        run: |
+          rm -rf node_modules/better-sqlite3/build
+          npx electron-builder --mac --x64 --publish never
+      - name: Verify each app contains a database module for its own chip type
+        run: |
+          A=dist/mac-arm64/Threadboard.app/Contents/Resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release/better_sqlite3.node
+          X=dist/mac/Threadboard.app/Contents/Resources/app.asar.unpacked/node_modules/better-sqlite3/build/Release/better_sqlite3.node
+          file "$A" "$X"
+          file "$A" | grep -q arm64
+          file "$X" | grep -q x86_64
       - name: Check the installers contain the app
         run: |
           ls -lh dist/*.dmg
@@ -29,6 +42,7 @@ jobs:
           done
       - name: Smoke-test the packaged Apple Silicon app (launch, database, file storage)
         continue-on-error: true
+        timeout-minutes: 3
         env:
           THREADBOARD_DATA_DIR: ${{ runner.temp }}/tbdata
         run: |
