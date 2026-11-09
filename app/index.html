@@ -990,13 +990,34 @@ if(window.tb&&tb.onClose)tb.onClose(async()=>{try{endSession();await flushNow()}
 /* ---- optional local AI assistant: a free open-weight model running on this computer (Ollama or any OpenAI-compatible local server) ---- */
 ROOT.ai=ROOT.ai||{prov:'ollama',url:'http://localhost:11434',model:'',ctx:8192,scope:'cur'};
 const AIK={ollama:{url:'http://localhost:11434',name:'Ollama'},openai:{url:'http://localhost:1234/v1',name:'OpenAI-compatible local server (LM Studio, llama.cpp…)'}};
-let aiCtl=null,aiMap=[],aiModels=null,aiStat='',aiRes='',aiBusy=false;
+let aiQ=[],aiVid=true,aiPap=false,aiWebRes=[],aiCtl=null,aiMap=[],aiModels=null,aiStat='',aiRes='',aiBusy=false;
 async function aiNet(path,body){const a=ROOT.ai,url=a.url.replace(/\/+$/,'')+path,ctl=aiCtl||{id:uid(),ac:new AbortController()};
   if(window.tb&&tb.net){const r=await tb.net({url,method:body?'POST':'GET',body:body?JSON.stringify(body):null,id:ctl.id});if(r.error)throw new Error(r.error);if(r.status>=400)throw new Error('The model server answered '+r.status+': '+String(r.body).slice(0,200));return JSON.parse(r.body)}
   const h=new URL(url).hostname;if(!['localhost','127.0.0.1','[::1]'].includes(h))throw new Error('Only a server on this computer (localhost) is allowed.');
   const r=await fetch(url,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:ctl.ac.signal});
   if(!r.ok)throw new Error('The model server answered '+r.status+': '+(await r.text()).slice(0,200));return r.json()}
 async function aiModelsList(){const a=ROOT.ai;if(a.prov==='ollama'){const r=await aiNet('/api/tags');return(r.models||[]).map(m=>m.name)}const r=await aiNet('/models');return(r.data||[]).map(m=>m.id)}
+const aiHasWeb=()=>!!(window.tb&&tb.web);
+async function aiSuggestQueries(){if(aiBusy)return;const a=ROOT.ai;if(!a.model){aiErr='Choose a model first.';aiPaint();return}
+  const d=aiDigest(a.scope,Math.max(1500,Math.floor((a.ctx-1700)*3)),'');if(!d.inc){aiStat='There are no notes to read yet.';aiPaint();return}
+  aiBusy=true;aiCtl={id:uid(),ac:new AbortController()};aiErr='';aiStat='Reading your notes to suggest what to look up… (nothing is sent anywhere yet)';aiPaint();
+  try{const o=aiParse(await llm('You help a researcher decide what to look up. Reply with JSON only: {"queries":[string,string,string]}. Each query is 3-7 plain words for a web search, covering different gaps or next steps in the notes. Never include private names, emails or secrets from the notes.',`NOTES:\n${d.text}`,true));
+    aiQ=((o&&o.queries)||[]).map(q=>String(q).replace(/["]/g,'').slice(0,120)).filter(Boolean).slice(0,4);aiStat=aiQ.length?'Edit the searches if you like, then press “Search the web”. Only these words are sent.':'The model gave no searches — type your own below.'}
+  catch(e){aiErr=/abort/i.test(String(e.message))?'Cancelled.':String(e.message||e)}
+  aiBusy=false;aiCtl=null;aiPaint()}
+async function aiWebRun(){if(aiBusy)return;const a=ROOT.ai,qs=[...document.querySelectorAll('#aib .aiwq')].map(i=>i.value.trim()).filter(Boolean).slice(0,4);
+  if(!qs.length){aiErr='Add at least one search.';aiPaint();return}aiQ=qs;
+  aiBusy=true;aiCtl={id:uid(),ac:new AbortController()};aiErr='';aiRes='';aiWebRes=[];aiStat=`Searching the web for: ${qs.join(' · ')}`;aiPaint();
+  try{const jobs=[];for(const q of qs){jobs.push(['ddg',q],['wiki',q]);if(aiPap)jobs.push(['arxiv',q]);if(aiVid)jobs.push(['ddg',q+' site:youtube.com'])}
+    const seen=new Set(),res=[];let fails=0;
+    for(const[src,q]of jobs){const r=await tb.web({src,q});if(r.error){fails++;continue}for(const it of r.items||[]){if(!seen.has(it.url)){seen.add(it.url);res.push({...it,video:/youtube\.com|youtu\.be/.test(it.url)})}}}
+    if(!res.length)throw new Error(fails?'Could not reach the search sources (are you online?). Nothing was found.':'No results found.');
+    aiWebRes=res.slice(0,24);aiStat='Choosing what is worth your time… (on this computer)';aiPaint();
+    const d=aiDigest(a.scope,Math.max(1500,Math.floor((a.ctx-1700)*1.5)),''),list=aiWebRes.map((r,i)=>`[R${i+1}] (${r.video?'video':r.source}) ${r.title} — ${r.snippet.slice(0,220)}`).join('\n');
+    const out=await llm(`You recommend reading and videos to a researcher. Use ONLY the WEB RESULTS provided; never invent a result or URL. Reply with JSON only: {"summary": string, "items":[{"title": string, "detail": string (why it matters to this user's notes, citing note numbers like [#2]), "result": number (the R number), "sources": [note numbers], "kind":"resource"}]}. Choose at most 8 of the best, mixing articles, videos and papers when present. Web snippets may be inaccurate: do not state facts from them as certain.`,`NOTES:\n${d.text}\n\nWEB RESULTS:\n${list}`,true),o=aiParse(out);
+    aiRes=o?o:{summary:aiClean(out),items:[]};aiStat=`Done · ${aiWebRes.length} results from the web considered. These links come from search results — verify before relying on them.`}
+  catch(e){aiStat='';aiErr=/abort/i.test(String(e.message))?'Cancelled.':String(e.message||e)}
+  aiBusy=false;aiCtl=null;aiPaint()}
 async function aiPull(name){aiBusy=true;aiCtl={id:uid(),ac:new AbortController()};aiErr='';aiStat=`Downloading “${name}” to this computer… this can take several minutes (it is a one-time download). Keep Ollama running.`;aiPaint();
   try{const r=await aiNet('/api/pull',{name,stream:false});if(r.error)throw new Error(r.error);aiModels=await aiModelsList();ROOT.ai.model=name.includes(':')?name:aiModels.find(m=>m.startsWith(name))||aiModels[0]||'';aiStat=`“${name}” is ready.`;save()}
   catch(e){aiStat='';aiErr=/abort/i.test(String(e.message))?'Download cancelled.':'Download failed: '+(e.message||e)}
@@ -1046,7 +1067,15 @@ const aiOf=i=>aiMap[i-1];
 function aiNew(title,body,x,y){const n=newNote(x,y,false,title);n.body=body;els[n.id].querySelector('.ed').value=body;
   const b=boxOf(n),occ=Object.values(N).filter(o=>o!==n).map(boxOf),sp=spiral((dx,dy)=>!occ.some(o=>OV({...b,x:b.x+dx,y:b.y+dy},o)),50)||[0,0];n.x+=sp[0];n.y+=sp[1];place(n);refresh();drawLinks();save();return n}
 const refOf=({w,n})=>w===S?`[[${n.title}]]`:`@[${w.name}/${n.title}]`;
-function aiCard(it){const src=(it.sources||[]).map(Number).filter(i=>aiOf(i)),grounded=it.basis==='notes'&&src.length>0,c=el$('div','acd'+(grounded?'':' m'));
+function aiCard(it){if(it.kind==='resource'){const r=aiWebRes[(+it.result||0)-1];if(!r)return el$('div','acd m',{textContent:''});
+    const src=(it.sources||[]).map(Number).filter(i=>aiOf(i)),c=el$('div','acd m');
+    c.innerHTML=`<span class="tg m">From the web · ${r.video?'video':r.source==='web'?'article':esc(r.source)} · verify</span><h5>${esc(String(it.title||r.title))}</h5><p>${esc(String(it.detail||''))}</p><p class="nt">${esc(r.title)} — ${esc(new URL(r.url).hostname)}</p>`;
+    if(src.length){const sr=el$('div','sr');for(const i of src){const o=aiOf(i),b=el$('span','',{textContent:(o.w===S?'':o.w.name+' · ')+(o.n.title||'Untitled')});b.onclick=()=>jumpTo(o.w.id,o.n.id);sr.append(b)}c.append(sr)}
+    const bt=el$('div','bt'),mk=(t,f)=>{const b=el$('button','',{textContent:t});b.onclick=f;bt.append(b)};
+    mk('Open',()=>window.open(r.url,'_blank'));
+    mk('Save to a note',()=>{const p=toWorld(innerWidth/2,innerHeight/2);aiNew(String(it.title||r.title).slice(0,80),`${String(it.detail||'')}\n\n${r.url}`+(src.length?'\n\nRelated: '+src.map(i=>refOf(aiOf(i))).join(' '):''),p.x-130,p.y-60);c.remove();toast('Saved to a note')});
+    mk('Dismiss',()=>c.remove());c.append(bt);return c}
+  const src=(it.sources||[]).map(Number).filter(i=>aiOf(i)),grounded=it.basis==='notes'&&src.length>0,c=el$('div','acd'+(grounded?'':' m'));
   c.innerHTML=`<span class="tg ${grounded?'n':'m'}">${grounded?'From your notes':'New information · from the model, unverified'}</span><h5>${esc(String(it.title||'Suggestion'))}</h5><p>${esc(String(it.detail||''))}</p>`;
   if(src.length){const sr=el$('div','sr');for(const i of src){const o=aiOf(i),b=el$('span','',{textContent:(o.w===S?'':o.w.name+' · ')+(o.n.title||'Untitled'),title:'Open this note'});b.onclick=()=>jumpTo(o.w.id,o.n.id);sr.append(b)}c.append(sr)}
   const bt=el$('div','bt'),mk=(t,f)=>{const b=el$('button','',{textContent:t});b.onclick=f;bt.append(b);return b};
@@ -1075,8 +1104,14 @@ function aiPaint(){const B=$('#aib');if(!B)return;const a=ROOT.ai,locked=ROOT.li
     <div class="fr" style="margin-bottom:8px">Focus note (for “Critique a note”)<select id="aif"><option value="">Whole selection</option>${Object.values(S.notes).filter(n=>!n.mid).map(n=>`<option value="${n.id}">${esc(n.title||'Untitled')}</option>`).join('')}</select></div>
     <div class="atk">${Object.entries(AIT).map(([k,v])=>`<button data-k="${k}" ${aiBusy?'disabled':''}>${v[0]}</button>`).join('')}</div>
     <div class="aq" style="margin-top:8px"><input type="text" id="aiq" placeholder="Ask a question about your notes…" ${aiBusy?'disabled':''}><button id="aia" ${aiBusy?'disabled':''}>Ask</button></div>`;B.append(q)}
+  if(conn&&aiHasWeb()){const d=el$('details');d.open=!!(aiQ.length||aiWebRes.length);
+    d.innerHTML=`<summary>Find reading &amp; videos (searches the web)</summary><div class="fr">Free · no account. Your notes stay on this computer; only the search words below are sent to DuckDuckGo, Wikipedia${aiPap?' and arXiv':''}. Those free services may slow or block heavy use, so this can’t promise unlimited searching.</div>
+    <div class="fr"><button id="aiw1" ${aiBusy?'disabled':''}>1 · Suggest searches from my notes</button></div>
+    ${aiQ.map(q=>`<div class="fr"><input type="text" class="aiwq" value="${esc(q)}"></div>`).join('')}
+    <div class="fr"><label><input type="checkbox" id="aiwv" ${aiVid?'checked':''}> Include videos (YouTube)</label><label><input type="checkbox" id="aiwp" ${aiPap?'checked':''}> Include research papers (arXiv)</label></div>
+    ${aiQ.length?`<div class="fr"><button id="aiw2" ${aiBusy?'disabled':''}>2 · Search the web &amp; recommend</button></div>`:''}`;B.append(d)}
   if(aiStat){const s=el$('div','ast',{textContent:aiStat});if(aiBusy){const c=el$('button','',{textContent:'Cancel'});c.style.marginLeft='8px';c.onclick=()=>{aiCtl&&aiCtl.ac.abort();window.tb&&tb.netCancel&&aiCtl&&tb.netCancel(aiCtl.id)};s.append(c)}B.append(s)}
-  if(aiRes){if(aiRes.summary)B.append(el$('p','',{textContent:String(aiRes.summary)}));for(const it of(aiRes.items||[]).slice(0,12))B.append(aiCard(it))}
+  if(aiRes){if(aiRes.summary)B.append(el$('p','',{textContent:String(aiRes.summary)}));for(const it of(aiRes.items||[]).filter(it=>it.kind!=='resource'||aiWebRes[(+it.result||0)-1]).slice(0,12))B.append(aiCard(it))}
   if(locked)B.append(el$('div','nt',{textContent:`${locked} locked workspace${locked>1?'s are':' is'} never read by the assistant. Unlock one to include it.`}));
   const g=n=>B.querySelector(n);
   g('#aip').onchange=e=>{a.prov=e.target.value;a.url=AIK[a.prov].url;a.model='';aiModels=null;aiErr='';save();aiPaint()};
@@ -1084,6 +1119,7 @@ function aiPaint(){const B=$('#aib');if(!B)return;const a=ROOT.ai,locked=ROOT.li
   g('#aiu').onkeydown=e=>e.stopPropagation();
   g('#aic').onclick=()=>{a.url=g('#aiu').value.trim();aiCheck()};
   const so=g('#ais1');if(so)so.onclick=async()=>{aiStat='Starting Ollama…';aiPaint();if(window.tb&&tb.startOllama)await tb.startOllama();for(let i=0;i<8&&aiModels===null;i++){await new Promise(r=>setTimeout(r,1500));await aiCheck(true)}if(aiModels===null){aiStat='';aiErr='Ollama did not start. If it is not installed yet, use “Get Ollama” first.'}aiPaint()};
+  if(g('#aiw1')){g('#aiw1').onclick=aiSuggestQueries;g('#aiwv').onchange=e=>aiVid=e.target.checked;g('#aiwp').onchange=e=>{aiPap=e.target.checked;aiPaint()};B.querySelectorAll('.aiwq').forEach(i=>i.onkeydown=e=>e.stopPropagation());const w2=g('#aiw2');if(w2)w2.onclick=aiWebRun}
   const go=g('#aig');if(go)go.onclick=()=>window.open('https://ollama.com/download','_blank');
   const dl=g('#aid');if(dl)dl.onclick=()=>aiPull(g('#aidm').value);
   if(conn){g('#aim').onchange=e=>{a.model=e.target.value;save()};g('#aix').onchange=e=>{a.ctx=+e.target.value;save()};g('#ais2').onchange=e=>{a.scope=e.target.value;save()};

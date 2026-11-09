@@ -12,3 +12,6 @@ The app is not notarized by Apple, so the first launch needs right-click > Open.
 
 ## Optional local AI assistant
 Runs a free open-weight model on your own computer through Ollama (or any OpenAI-compatible local server). The app only talks to `localhost`. Locked workspaces are never read. Speed, quality and how many notes fit are limited by your hardware, the model and its context window.
+
+### Web lookup (optional, opt-in each time)
+"Find reading & videos" in the AI panel lets the local model propose searches from your notes. You can edit them; only those search words are sent (to DuckDuckGo, Wikipedia and optionally arXiv). Your notes never leave the computer. Results are labelled "from the web — verify". These free services can rate-limit heavy use, so it is not guaranteed unlimited.

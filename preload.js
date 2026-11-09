@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('tb', {
   fileGet: id => ipc.invoke('tb:fileGet', id),
   lib: n => ipc.invoke('tb:lib', n),
   fileDel: id => ipc.invoke('tb:fileDel', id),
+  web: o => ipc.invoke('tb:web', o),
   startOllama: () => ipc.invoke('tb:startOllama'),
   net: o => ipc.invoke('tb:net', o),
   netCancel: id => ipc.send('tb:netCancel', id),
